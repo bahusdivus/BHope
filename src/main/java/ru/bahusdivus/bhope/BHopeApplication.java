@@ -1,13 +1,13 @@
-package ru.bahusdivus.webtest;
+package ru.bahusdivus.bhope;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class WebtestApplication {
+public class BHopeApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(WebtestApplication.class, args);
+		SpringApplication.run(BHopeApplication.class, args);
 	}
 
 }
