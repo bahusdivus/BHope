@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="initial users table" author="Vladimir">
+        <insert tableName="USERS">
+            <column name="ID" valueNumeric="nextval('USER_SEQ')"/>
+            <column name="LOGIN" value="User1"/>
+            <column name="NAME" value="UserName 1"/>
+            <column name="PASSWORD" value="notHashPass"/>
+            <column name="EMAIL" value="user1@email.test"/>
+            <column name="IS_ADMIN" value="true"/>
+            <column name="DATE" value="2019-07-16 23:07:55+03"/>
+            <column name="DELETED" value="false"/>
+        </insert>
+        <insert tableName="USERS">
+            <column name="ID" valueNumeric="nextval('USER_SEQ')"/>
+            <column name="LOGIN" value="User2"/>
+            <column name="NAME" value="UserName 2"/>
+            <column name="PASSWORD" value="notHashPass"/>
+            <column name="EMAIL" value="user2@email.test"/>
+            <column name="IS_ADMIN" value="false"/>
+            <column name="DATE" value="2019-07-16 23:08:55+03"/>
+            <column name="DELETED" value="false"/>
+        </insert>
+        <insert tableName="USERS">
+            <column name="ID" valueNumeric="nextval('USER_SEQ')"/>
+            <column name="LOGIN" value="User3"/>
+            <column name="NAME" value="UserName 3"/>
+            <column name="PASSWORD" value="notHashPass"/>
+            <column name="EMAIL" value="user3@email.test"/>
+            <column name="IS_ADMIN" value="false"/>
+            <column name="DATE" value="2019-07-16 23:09:55+03"/>
+            <column name="DELETED" value="false"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="create posts sequence" author="tatanka">
+        <createSequence cycle="false"
+                        sequenceName="POST_SEQ"/>
+        <rollback>
+            <sql>
+                DROP SEQUENCE POSTS_SEQ;
+            </sql>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="create posts table" author="Vladimir">
+        <createTable tableName="POSTS">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" unique="true" primaryKey="true"/>
+            </column>
+            <column name="HEADER" type="VARCHAR(250)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CONTENT" type="TEXT">
+            </column>
+            <column name="USER_ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DATE" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DELETED" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="POSTS" baseColumnNames="USER_ID"
+                                 constraintName="FK_POSTS_USER"
+                                 referencedTableName="USERS" referencedColumnNames="ID"/>
+        <rollback>
+            <sql>
+                ALTER TABLE POSTS DROP FOREIGN KEY FK_POSTS_USER;
+            </sql>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>
