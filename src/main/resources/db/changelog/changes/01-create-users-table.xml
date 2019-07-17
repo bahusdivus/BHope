@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="create users sequence" author="tatanka">
+        <createSequence cycle="false"
+                        sequenceName="USER_SEQ"/>
+        <rollback>
+            <sql>
+                DROP SEQUENCE USER_SEQ;
+            </sql>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="create users table" author="Vladimir">
+        <createTable tableName="USERS">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" unique="true" primaryKey="true"/>
+            </column>
+            <column name="LOGIN" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="NAME" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PASSWORD" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="EMAIL" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="IS_ADMIN" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DATE" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DELETED" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>
