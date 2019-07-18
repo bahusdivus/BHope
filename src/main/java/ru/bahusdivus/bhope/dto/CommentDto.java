@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -16,7 +16,7 @@ public class CommentDto {
     private long post;
     private UserDto user;
     private String content;
-    private LocalDate date;
+    private LocalDateTime date;
     private boolean deleted;
-    private List<CommentDto> childrens;
+    private List<CommentDto> children;
 }

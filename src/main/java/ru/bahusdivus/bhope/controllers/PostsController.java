@@ -19,7 +19,7 @@ public class PostsController {
     @RequestMapping("/post/{postId}")
     public String getPage(@PathVariable("postId") long postId, Model model) {
         PostWithCommentsDto post = commentsService.getPost(postId);
-        model.addAttribute("title", "Загогловок");
+        model.addAttribute("title", "Заголовок");
         model.addAttribute("postId", postId);
         model.addAttribute("content", post.getContent());
         model.addAttribute("comments", post.getComments());
