@@ -3,14 +3,12 @@ package ru.bahusdivus.bhope.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.bahusdivus.bhope.dto.PostDto;
-import ru.bahusdivus.bhope.dto.UserDto;
 import ru.bahusdivus.bhope.entities.Post;
-import ru.bahusdivus.bhope.entities.User;
 import ru.bahusdivus.bhope.repository.PostRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class PostsServiceImpl implements PostsService {
@@ -19,37 +17,30 @@ public class PostsServiceImpl implements PostsService {
     private PostRepository postRepository;
 
     @Override
-    public Post addPost(Post post) {
+    public void savePost(PostDto postDto) {
 
-        Post savePost = postRepository.save(post);
-        return savePost;
-
+        Post post = postRepository.findById(postDto.getId())
+                .orElse(new Post(postDto.getUser().getId()));
+        post.setHeader(postDto.getHeader());
+        post.setContent(postDto.getContent());
+        postRepository.save(post);
     }
 
     @Override
-    public void delete(long id) {
-
+    public PostDto getPost(long id) {
+        Optional<Post> post = postRepository.findById(id);
+        return post.map(PostDto::new).orElse(null);
     }
 
     @Override
-    public PostDto editPost(Post post) {
-        return null;
+    public List<PostDto> getPosts() {
+        List<Post> posts = postRepository.findAll();
+        return posts.stream().map(PostDto::new).collect(Collectors.toList());
     }
 
     @Override
-    public Optional<Post> getPostById(long id) {
-        return postRepository.findById(id);
-    }
-
-    @Override
-    public Iterable<Post> getPosts() {
-        return postRepository.findAll();
-
-    }
-
-    @Override
-    public Iterable<PostDto> getPostsByUser(UserDto user) {
-
-        return null;
+    public List<PostDto> getPostsByUserId(long userId) {
+        List<Post> posts = postRepository.findByUserId(userId);
+        return posts.stream().map(PostDto::new).collect(Collectors.toList());
     }
 }

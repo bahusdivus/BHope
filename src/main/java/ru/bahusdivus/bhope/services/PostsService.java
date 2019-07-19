@@ -10,10 +10,8 @@ import java.util.Optional;
 
 public interface PostsService {
 
-    Post addPost(Post post);
-    void delete(long id);
-    PostDto editPost(Post post);
-    Optional<Post> getPostById(long id);
-    Iterable<Post> getPosts();
-    Iterable<PostDto> getPostsByUser(UserDto user);
+    void savePost(PostDto post);
+    PostDto getPost(long id);
+    List<PostDto> getPosts();
+    List<PostDto> getPostsByUserId(long userId);
 }

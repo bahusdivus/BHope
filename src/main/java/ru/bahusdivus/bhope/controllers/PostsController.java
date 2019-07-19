@@ -2,13 +2,10 @@ package ru.bahusdivus.bhope.controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import ru.bahusdivus.bhope.dto.PostDto;
 import ru.bahusdivus.bhope.dto.PostWithCommentsDto;
 import ru.bahusdivus.bhope.dto.UserDto;
-import ru.bahusdivus.bhope.entities.Post;
-import ru.bahusdivus.bhope.entities.User;
 import ru.bahusdivus.bhope.services.CommentsService;
 import ru.bahusdivus.bhope.services.PostsService;
 
@@ -36,17 +33,39 @@ public class PostsController {
         return "postPage";
     }
 
-    @RequestMapping("/index")
+    @RequestMapping("/")
     public String getIndex(Model model) {
-        Iterable<Post> posts = postsService.getPosts();
+        List<PostDto> posts = postsService.getPosts();
         model.addAttribute("posts", posts);
         return "index";
     }
 
-    @RequestMapping("/postByUser")
-    public String getPostByUser(Model model) {
-        Iterable<Post> posts = postsService.getPosts();
+    @RequestMapping("/users/{userId}/posts")
+    public String getPostByUser(@PathVariable("userId") long userId, Model model) {
+        //Получить имя user по userId
+        List<PostDto> posts = postsService.getPostsByUserId(userId);
         model.addAttribute("posts", posts);
         return "postByUser";
+    }
+
+    @RequestMapping("/post")
+    public String getNewPostForm(Model model) {
+        PostDto postDto = new PostDto();
+        postDto.setUser(new UserDto(1));
+        model.addAttribute("post", postDto);
+        return "editPost";
+    }
+
+    @RequestMapping("/post/{postId}/edit")
+    public String getEditPostForm(@PathVariable("postId") long postId, Model model) {
+        PostDto postDto = postsService.getPost(postId);
+        model.addAttribute("post", postDto);
+        return "editPost";
+    }
+
+    @RequestMapping(value = "savePost", method = RequestMethod.POST)
+    public String savePost(@ModelAttribute PostDto post) {
+        postsService.savePost(post);
+        return "redirect:/post/" + post.getId();
     }
 }

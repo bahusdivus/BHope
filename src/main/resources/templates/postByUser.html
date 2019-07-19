@@ -5,10 +5,9 @@
             <h2>User</h2>
                 <div th:each="post : ${posts}">
                     <div class="border rounded p-2">
-                        <!--<p th:text="${post.user.name + ' ' + post.date}" class="bg-secondary"></p>-->
                         <p th:text="${post.header}"></p>
                         <p th:text="${post.content}"></p>
-                        <!--<p th:text=" 'Комментарии ' + (${post.comments.size()})" class="bg-secondary"></p>-->
+                        <p th:text="${post.date + '   Комментарии ' + post.countComments}"></p>
                     </div>
                 </div>
             </div>

@@ -16,7 +16,7 @@ public class CommentsServiceImpl implements CommentsService {
     public PostWithCommentsDto getPost(long id) {
         // Это заглушка, реальный метод будет собирать ДТО из полученных из базы ентитей
         List<CommentDto> comments = getCommentsByPostId(id);
-        return new PostWithCommentsDto(id, "Post test text here", comments);
+        return new PostWithCommentsDto(id, "Post test text here", new UserDto(1),comments);
     }
 
     private List<CommentDto> getCommentsByPostId(long id) {
