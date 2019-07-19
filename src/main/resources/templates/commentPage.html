@@ -2,17 +2,12 @@
 <div th:replace="fragments/navbar"></div>
     <div class="row">
         <div class="col-sm-12">
-            <form action="/saveComment" method="post">
-                <div th:if="${comment}" >
-                    <textarea th:text="${comment.content}" name="content"></textarea>
-                    <input th:value="${comment.id}" type="hidden" name="id" />
-                </div>
-                <div th:unless="${comment}">
-                    <textarea name="content"></textarea>
-                </div>
-                <input type="hidden" name="user" value="1" />
-                <input type="hidden" name="parent" value="1" />
-                <input type="hidden" name="post" value="1" />
+            <form th:object="${comment}" action="/saveComment" method="post">
+                <textarea th:field="*{content}"></textarea>
+                <input th:field="*{id}" type="hidden" />
+                <input type="hidden" th:field="*{user.id}" />
+                <input type="hidden" th:field="*{parent}" />
+                <input type="hidden" th:field="*{post}" />
                 <input type="submit" value="Сохранить" />
                 <input type="button" value="Отменить" onclick="history.back();">
             </form>

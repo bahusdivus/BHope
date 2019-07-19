@@ -22,10 +22,10 @@ public class CommentDto {
     private boolean deleted;
     private List<CommentDto> children;
 
-    public CommentDto(long parent, long post, UserDto user, String content) {
+    public CommentDto(long parent, long post, long userId, String content) {
         this.parent = parent;
         this.post = post;
-        this.user = user;
+        this.user = new UserDto(userId);
         this.content = content;
     }
 }

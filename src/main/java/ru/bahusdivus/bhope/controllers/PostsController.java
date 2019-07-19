@@ -39,7 +39,7 @@ public class PostsController {
     }
 
     @RequestMapping(value = "saveComment", method = RequestMethod.POST)
-    public String saveComment(@RequestParam CommentDto comment) {
+    public String saveComment(@ModelAttribute CommentDto comment) {
         return "redirect:/post/" + comment.getPost();
     }
 }
