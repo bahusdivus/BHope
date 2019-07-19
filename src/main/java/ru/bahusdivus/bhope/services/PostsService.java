@@ -11,6 +11,7 @@ import java.util.Optional;
 public interface PostsService {
 
     void savePost(PostDto post);
+    void deletePost(long id);
     PostDto getPost(long id);
     List<PostDto> getPosts();
     List<PostDto> getPostsByUserId(long userId);

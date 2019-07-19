@@ -27,9 +27,19 @@ public class PostsServiceImpl implements PostsService {
     }
 
     @Override
+    public void deletePost(long id) {
+        Optional<Post> postOptional = postRepository.findById(id);
+        if (postOptional.isPresent()) {
+            Post post = postOptional.get();
+            post.setDeleted(true);
+            postRepository.save(post);
+        }
+    }
+
+    @Override
     public PostDto getPost(long id) {
-        Optional<Post> post = postRepository.findById(id);
-        return post.map(PostDto::new).orElse(null);
+        Optional<Post> postOptional = postRepository.findById(id);
+        return postOptional.map(PostDto::new).orElse(null);
     }
 
     @Override

@@ -1,0 +1,15 @@
+<div th:replace="fragments/header"></div>
+<div th:replace="fragments/navbar"></div>
+<div class="row">
+    <div class="col-sm-12">
+        <form th:object="${post}" action="/savePost" method="post">
+            <textarea th:field="*{header}"></textarea>
+            <textarea th:field="*{content}"></textarea>
+            <input type="hidden" th:field="*{id}"  />
+            <input type="hidden" th:field="*{user.id}" />
+            <input type="submit" value="Сохранить" />
+            <input type="button" value="Отменить" onclick="history.back();">
+        </form>
+    </div>
+</div>
+<div th:replace="fragments/footer"></div>

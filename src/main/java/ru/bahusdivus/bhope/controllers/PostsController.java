@@ -63,9 +63,16 @@ public class PostsController {
         return "editPost";
     }
 
+    @RequestMapping("/post/{postId}/delete")
+    public String deletePost(@PathVariable("postId") long postId) {
+        postsService.deletePost(postId);
+        return "redirect:/";
+    }
+
     @RequestMapping(value = "savePost", method = RequestMethod.POST)
     public String savePost(@ModelAttribute PostDto post) {
         postsService.savePost(post);
-        return "redirect:/post/" + post.getId();
+        return "redirect:/";
     }
+
 }
