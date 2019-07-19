@@ -3,6 +3,7 @@ package ru.bahusdivus.bhope.dto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import ru.bahusdivus.bhope.entities.Comment;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -19,4 +20,9 @@ public class CommentDto {
     private LocalDateTime date;
     private boolean deleted;
     private List<CommentDto> children;
+
+    public CommentDto(Comment comment) {
+        id = comment.getId();
+        content = comment.getContent();
+    }
 }

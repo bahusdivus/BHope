@@ -1,4 +1,5 @@
-<div th:replace="fragments/header"></div>
+<div th:replace="fragments/header" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml"
+     xmlns:th="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml"></div>
 <div th:replace="fragments/navbar"></div>
     <div class="row">
         <div class="col-sm-12">
@@ -11,7 +12,7 @@
                             <p th:text="${comment.user.name + ' ' + comment.date}" class="bg-secondary"></p>
                             <p th:text="${comment.content}"></p>
                         </div>
-                        <div th:with="comments = ${comment.childrens}" th:include="::commentsFragment" class="ml-3 my-2" />
+                        <div th:with="comments = ${comment.children}" th:include="::commentsFragment" class="ml-3 my-2" />
                     </div>
             </div>
         </div>

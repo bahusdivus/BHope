@@ -7,6 +7,7 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -36,7 +37,7 @@ public class Post {
     private User user;
 
     @Column(name = "DATE", nullable = false)
-    private Timestamp date;
+    private LocalDateTime date;
 
     @Column(name = "DELETED", nullable = false)
     private boolean deleted;
