@@ -1,9 +1,6 @@
 package ru.bahusdivus.bhope.entities;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -12,8 +9,9 @@ import java.util.Set;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @EqualsAndHashCode(of = "id")
-@ToString(exclude = {"user", "deleted", "date"})
+@ToString(exclude = {"user", "deleted", "date", "comments"})
 @Entity
 @Table(name = "POSTS")
 public class Post {
@@ -47,4 +45,7 @@ public class Post {
     )
     private Set<Comment> comments = new LinkedHashSet<>();
 
+    public Post(Long id) {
+        this.id = id;
+    }
 }

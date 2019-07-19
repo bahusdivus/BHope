@@ -8,4 +8,6 @@ public interface CommentsService {
     PostWithCommentsDto getPost(long id);
 
     CommentDto getComment(long id);
+
+    void saveComment(CommentDto comment);
 }
