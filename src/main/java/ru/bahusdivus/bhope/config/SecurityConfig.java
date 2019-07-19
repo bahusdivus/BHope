@@ -13,7 +13,7 @@ import org.springframework.security.core.session.SessionRegistryImpl;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private static final String[] UNSECURED_RESOURCE_LIST = {"/resources/**"};
+    private static final String[] UNSECURED_RESOURCE_LIST = {"/**", "/js/**", "/css/**"};
 
     @Bean
     SessionRegistry sessionRegistry() {
