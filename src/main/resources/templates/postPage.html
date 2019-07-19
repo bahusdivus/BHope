@@ -9,12 +9,19 @@
             <div th:fragment="commentsFragment">
                 <div th:each="comment : ${comments}">
                     <div class="border rounded p-2">
-                        <p th:text="${comment.user.name + ' ' + comment.date}" class="bg-secondary"></p>
-                        <p th:text="${comment.content}"></p>
-                        <p>
-                            <a th:href="${'/post/' + postId + '/comment/' + comment.id}">Редактировать</a>&nbsp;|&nbsp;
-                            <a th:href="${'/post/' + postId + '/comment/' + comment.id + '/comment'}">Комментировать</a>
-                        </p>
+                        <div th:unless="${comment.deleted}">
+                            <p th:text="${comment.user.name + ' ' + comment.date}" class="bg-secondary text-light"></p>
+                            <p th:text="${comment.content}"></p>
+                            <p>
+                                <a th:href="${'/post/' + postId + '/comment/' + comment.id}">Редактировать</a>&nbsp;|&nbsp;
+                                <a th:href="${'/post/' + postId + '/comment/' + comment.id + '/delete'}">Удалить</a>&nbsp;|&nbsp;
+                                <a th:href="${'/post/' + postId + '/comment/' + comment.id + '/comment'}">Комментировать</a>
+                            </p>
+                        </div>
+                        <div th:if="${comment.deleted}">
+                            <p th:text="${comment.user.name + ' ' + comment.date}" class="bg-light text-muted"></p>
+                            <p class="text-muted">Этот комментарий был удалён</p>
+                        </div>
                     </div>
                     <div th:with="comments = ${comment.children}" th:include="::commentsFragment" class="ml-3 my-2" />
                 </div>

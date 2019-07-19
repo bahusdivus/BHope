@@ -3,14 +3,11 @@ package ru.bahusdivus.bhope.services;
 import org.springframework.stereotype.Service;
 import ru.bahusdivus.bhope.dto.CommentDto;
 import ru.bahusdivus.bhope.dto.PostWithCommentsDto;
-import ru.bahusdivus.bhope.dto.UserDto;
 import ru.bahusdivus.bhope.entities.Comment;
-import ru.bahusdivus.bhope.entities.Post;
 import ru.bahusdivus.bhope.repository.CommentRepository;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,8 +29,8 @@ public class CommentsServiceImpl implements CommentsService {
 
     @Override
     public CommentDto getComment(long id) {
-        UserDto user1 = new UserDto(1, "Test User 1");
-        return new CommentDto(1, 0, id, user1, "Comment test text 1", LocalDateTime.now(), false, new ArrayList<>());
+        Optional<Comment> commentOptional = commentRepository.findById(id);
+        return commentOptional.map(CommentDto::new).orElse(null);
     }
 
     @Override
@@ -44,4 +41,13 @@ public class CommentsServiceImpl implements CommentsService {
         commentRepository.save(comment);
     }
 
+    @Override
+    public void deleteComment(long id) {
+        Optional<Comment> commentOptional = commentRepository.findById(id);
+        if (commentOptional.isPresent()) {
+            Comment comment = commentOptional.get();
+            comment.setDeleted(true);
+            commentRepository.save(comment);
+        }
+    }
 }

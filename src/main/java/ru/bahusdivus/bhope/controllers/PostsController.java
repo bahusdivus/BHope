@@ -49,6 +49,12 @@ public class PostsController {
         return "commentPage";
     }
 
+    @RequestMapping("/post/{postId}/comment/{id}/delete")
+    public String deleteComment(@PathVariable("postId") long postId, @PathVariable("id") long id) {
+        commentsService.deleteComment(id);
+        return "redirect:/post/" + postId;
+    }
+
     @RequestMapping(value = "saveComment", method = RequestMethod.POST)
     public String saveComment(@ModelAttribute CommentDto comment) {
         commentsService.saveComment(comment);
