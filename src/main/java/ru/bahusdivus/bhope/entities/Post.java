@@ -1,16 +1,18 @@
 package ru.bahusdivus.bhope.entities;
 
 import lombok.*;
+import ru.bahusdivus.bhope.dto.UserDto;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @EqualsAndHashCode(of = "id")
+@NoArgsConstructor
 @ToString(exclude = {"user", "deleted", "date", "comments"})
 @Entity
 @Table(name = "POSTS")
@@ -34,7 +36,7 @@ public class Post {
     private User user;
 
     @Column(name = "DATE", nullable = false)
-    private Timestamp date;
+    private LocalDateTime date;
 
     @Column(name = "DELETED", nullable = false)
     private boolean deleted;
@@ -44,6 +46,17 @@ public class Post {
             fetch = FetchType.EAGER
     )
     private Set<Comment> comments = new LinkedHashSet<>();
+
+    public Post(long id, String header, String content) {
+        this.id = id;
+        this.header = header;
+        this.content = content;
+    }
+
+    public Post(UserDto userDto) {
+        this.user = new User(userDto.getId());
+        this.date = LocalDateTime.now();
+    }
 
     public Post(Long id) {
         this.id = id;

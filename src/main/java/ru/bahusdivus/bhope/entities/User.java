@@ -56,7 +56,7 @@ public class User {
     )
     private Set<Comment> comments = new LinkedHashSet<>();
 
-    public User(Long id) {
+    public User(long id) {
         this.id = id;
     }
 }
