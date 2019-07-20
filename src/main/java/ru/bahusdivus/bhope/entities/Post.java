@@ -1,6 +1,7 @@
 package ru.bahusdivus.bhope.entities;
 
 import lombok.*;
+import ru.bahusdivus.bhope.dto.UserDto;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -52,8 +53,12 @@ public class Post {
         this.content = content;
     }
 
-    public Post(long userId) {
-        this.user = new User(userId);
+    public Post(UserDto userDto) {
+        this.user = new User(userDto.getId());
         this.date = LocalDateTime.now();
+    }
+
+    public Post(Long id) {
+        this.id = id;
     }
 }

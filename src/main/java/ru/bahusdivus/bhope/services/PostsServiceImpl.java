@@ -20,7 +20,7 @@ public class PostsServiceImpl implements PostsService {
     public void savePost(PostDto postDto) {
 
         Post post = postRepository.findById(postDto.getId())
-                .orElse(new Post(postDto.getUser().getId()));
+                .orElse(new Post(postDto.getUser()));
         post.setHeader(postDto.getHeader());
         post.setContent(postDto.getContent());
         postRepository.save(post);
