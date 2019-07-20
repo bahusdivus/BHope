@@ -3,7 +3,7 @@
 <div class="row">
     <div class="col-sm-12">
         <form th:object="${post}" th:action="@{/savePost}" method="post">
-            <textarea th:field="*{header}"></textarea>
+            <textarea th:field="*{title}"></textarea>
             <textarea th:field="*{content}"></textarea>
             <input type="hidden" th:field="*{id}"  />
             <input type="hidden" th:field="*{user.id}" />

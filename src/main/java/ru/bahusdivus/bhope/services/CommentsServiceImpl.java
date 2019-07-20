@@ -2,6 +2,7 @@ package ru.bahusdivus.bhope.services;
 
 import org.springframework.stereotype.Service;
 import ru.bahusdivus.bhope.dto.CommentDto;
+import ru.bahusdivus.bhope.dto.PostDto;
 import ru.bahusdivus.bhope.dto.PostWithCommentsDto;
 import ru.bahusdivus.bhope.entities.Comment;
 import ru.bahusdivus.bhope.repository.CommentRepository;
@@ -14,17 +15,20 @@ import java.util.stream.Collectors;
 public class CommentsServiceImpl implements CommentsService {
 
     private final CommentRepository commentRepository;
+    private final PostsService postsService;
 
-    public CommentsServiceImpl(CommentRepository commentRepository) {
+    public CommentsServiceImpl(CommentRepository commentRepository, PostsService postsService) {
         this.commentRepository = commentRepository;
+        this.postsService = postsService;
     }
 
     @Override
-    public PostWithCommentsDto getPost(long id) {
+    public PostWithCommentsDto getPostWithComments(long id) {
         // Это заглушка, реальный метод будет собирать ДТО из полученных из базы ентитей
+        PostDto post = postsService.getPost(id);
         List<Comment> comments = commentRepository.findAllByPostIdAndParentIsNull(id);
         List<CommentDto> commentDtos = comments.stream().map(CommentDto::new).collect(Collectors.toList());
-        return new PostWithCommentsDto(id, "Post test text here", commentDtos);
+        return new PostWithCommentsDto(post, commentDtos);
     }
 
     @Override

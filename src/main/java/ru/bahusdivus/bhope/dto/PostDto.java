@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class PostDto {
     private long id;
-    private String header;
+    private String title;
     private String content;
     private LocalDateTime date;
     private boolean deleted;
@@ -21,7 +21,7 @@ public class PostDto {
     public PostDto(Post post) {
 
         id = post.getId();
-        header = post.getHeader();
+        title = post.getHeader();
         content = post.getContent();
         date = post.getDate();
         deleted = post.isDeleted();

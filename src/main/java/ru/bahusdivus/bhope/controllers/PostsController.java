@@ -1,7 +1,5 @@
 package ru.bahusdivus.bhope.controllers;
 
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -37,11 +35,9 @@ public class PostsController {
                           Model model) {
         model.addAttribute("login", userDetails != null ? userDetails.getUsername() : null);
 
-        PostWithCommentsDto post = commentsService.getPost(postId);
         model.addAttribute("login", userDetails != null ? userDetails.getUsername() : null);
-        model.addAttribute("title", "Заголовок");
-        model.addAttribute("postId", postId);
-        model.addAttribute("content", post.getContent());
+        PostWithCommentsDto post = commentsService.getPostWithComments(postId);
+        model.addAttribute("post", post.getPost());
         model.addAttribute("comments", post.getComments());
         return "postPage";
     }
