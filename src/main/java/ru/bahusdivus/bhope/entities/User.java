@@ -14,14 +14,14 @@ import java.util.Set;
 @ToString(exclude = {"deleted", "date"})
 @Entity
 @Table(name = "USERS")
+@SequenceGenerator(name = "USER_SEQ",
+        sequenceName = "USER_SEQ", allocationSize = 10)
 public class User {
 
     @Id
     @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "USER_SEQ")
-    @SequenceGenerator(name = "USER_SEQ",
-            sequenceName = "USER_SEQ", allocationSize = 10)
-    private long id;
+    private Long id;
 
     @Column(name = "LOGIN", nullable = false)
     private String login;

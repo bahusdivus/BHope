@@ -4,7 +4,6 @@ import lombok.*;
 import ru.bahusdivus.bhope.dto.UserDto;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -16,14 +15,14 @@ import java.util.Set;
 @ToString(exclude = {"user", "deleted", "date", "comments"})
 @Entity
 @Table(name = "POSTS")
+@SequenceGenerator(name = "POST_SEQ",
+        sequenceName = "POST_SEQ", allocationSize = 10)
 public class Post {
 
     @Id
     @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "POST_SEQ")
-    @SequenceGenerator(name = "POST_SEQ",
-            sequenceName = "POST_SEQ", allocationSize = 10)
-    private long id;
+    private Long id;
 
     @Column(name = "HEADER", nullable = false)
     private String header;

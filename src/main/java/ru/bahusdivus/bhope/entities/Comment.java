@@ -14,14 +14,14 @@ import java.util.Set;
 @ToString(exclude = {"user", "deleted", "date", "parent", "children", "post"})
 @Entity
 @Table(name = "COMMENTS")
+@SequenceGenerator(name = "commentGenerator",
+        sequenceName = "COMMENT_SEQ", allocationSize = 10)
 public class Comment {
 
     @Id
     @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "commentGenerator")
-    @SequenceGenerator(name = "commentGenerator",
-            sequenceName = "COMMENT_SEQ", allocationSize = 10)
-    private long id;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "PARENT_ID")

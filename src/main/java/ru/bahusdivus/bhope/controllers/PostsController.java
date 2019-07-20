@@ -1,5 +1,7 @@
 package ru.bahusdivus.bhope.controllers;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -55,9 +57,6 @@ public class PostsController {
                                 @AuthenticationPrincipal UserDetails userDetails,
                                 Model model) {
         model.addAttribute("login", userDetails != null ? userDetails.getUsername() : null);
-        //Получить имя user по userId
-
-//        long userId = userService.findByLogin(userLogin).getId();
         List<PostDto> posts = postsService.getPostsByUserId(userId);
         model.addAttribute("posts", posts);
         return "postByUser";

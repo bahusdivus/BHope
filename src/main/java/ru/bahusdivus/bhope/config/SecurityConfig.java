@@ -46,11 +46,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers(UNSECURED_RESOURCE_LIST).permitAll()
-////                .antMatchers("/add*/**").hasAuthority("USER")
-////                .antMatchers("/del*/**").hasAnyAuthority("ADMIN", "USER")
-////                .antMatchers("/admin/**").hasAnyAuthority("ADMIN")
-////                .antMatchers("/user/**").hasAnyAuthority("USER")
-////                .anyRequest().authenticated()
                 .and()
                 .formLogin()
                 .loginPage("/login")
@@ -72,48 +67,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
                 .invalidSessionUrl("/login");
-
-/*
-        http
-                .authorizeRequests()
-                .antMatchers(UNSECURED_RESOURCE_LIST)
-                .permitAll()
-                .and ()
-                .authorizeRequests()
-                .antMatchers("/**")
-                .authenticated()
-                .and()
-                .formLogin()
-                .permitAll()
-                .and()
-                .exceptionHandling().accessDeniedPage("/403")
-                .and()
-                .logout()
-                .logoutUrl("/logout")
-                .logoutSuccessUrl("/login");
-
-        http
-                .sessionManagement()
-                .maximumSessions(1)
-                .maxSessionsPreventsLogin(false)
-                .expiredUrl("/login")
-                .sessionRegistry(sessionRegistry())
-                .and()
-                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
-                .invalidSessionUrl("/login");
-*/
-
     }
-
-//    @Override
-//    public void configure(WebSecurity web) {
-//        web.ignoring()
-//            .antMatchers(UNSECURED_RESOURCE_LIST);
-//    }
-
-//    @Autowired
-//    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
-//    }
-
 }
