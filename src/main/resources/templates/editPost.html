@@ -2,7 +2,7 @@
 <div th:replace="fragments/navbar"></div>
 <div class="row">
     <div class="col-sm-12">
-        <form th:object="${post}" action="/savePost" method="post">
+        <form th:object="${post}" th:action="@{/savePost}" method="post">
             <textarea th:field="*{header}"></textarea>
             <textarea th:field="*{content}"></textarea>
             <input type="hidden" th:field="*{id}"  />

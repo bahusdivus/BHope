@@ -1,0 +1,16 @@
+<div th:replace="fragments/header"></div>
+<div th:replace="fragments/navbar"></div>
+
+Registration
+<form name="userForm" th:action="@{/registration}" method="post">
+  login : <input type="text" name="login" id="username"/>
+  password : <input type="text" name="password" id="password"/>
+  name : <input type="text" name="name" id="name"/>
+  email : <input type="text" name="email" id="email"/>
+  <br/>
+  ADMIN <input type="checkbox" name="isAdmin" value="ADMIN"/>
+  <hr/>
+  <input type="submit" value="зарегистрироваться" />
+</form>
+
+<div th:replace="fragments/footer"></div>
