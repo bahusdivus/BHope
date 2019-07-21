@@ -5,7 +5,7 @@ import ru.bahusdivus.bhope.dto.PostWithCommentsDto;
 
 public interface CommentsService {
 
-    PostWithCommentsDto getPost(long id);
+    PostWithCommentsDto getPostWithComments(long id);
 
     CommentDto getComment(long id);
 

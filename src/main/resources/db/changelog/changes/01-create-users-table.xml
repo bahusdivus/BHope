@@ -7,6 +7,7 @@
 
     <changeSet id="create users sequence" author="tatanka">
         <createSequence cycle="false"
+                        incrementBy="10"
                         sequenceName="USER_SEQ"/>
         <rollback>
             <sql>

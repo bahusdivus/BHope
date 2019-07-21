@@ -7,6 +7,7 @@
 
     <changeSet id="create comments sequence" author="tatanka">
         <createSequence cycle="false"
+                        incrementBy="10"
                         sequenceName="COMMENT_SEQ"/>
         <rollback>
             <sql>

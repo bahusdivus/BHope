@@ -21,7 +21,7 @@ public class PostsServiceImpl implements PostsService {
 
         Post post = postRepository.findById(postDto.getId())
                 .orElse(new Post(postDto.getUser()));
-        post.setHeader(postDto.getHeader());
+        post.setHeader(postDto.getTitle());
         post.setContent(postDto.getContent());
         postRepository.save(post);
     }

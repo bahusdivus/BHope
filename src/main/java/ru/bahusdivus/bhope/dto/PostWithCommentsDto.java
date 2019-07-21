@@ -10,7 +10,6 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 public class PostWithCommentsDto {
-    private long id;
-    private String content;
+    private PostDto post;
     private List<CommentDto> comments;
 }

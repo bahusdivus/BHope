@@ -37,11 +37,9 @@ public class PostsController {
                           Model model) {
         model.addAttribute("login", userDetails != null ? userDetails.getUsername() : null);
 
-        PostWithCommentsDto post = commentsService.getPost(postId);
         model.addAttribute("login", userDetails != null ? userDetails.getUsername() : null);
-        model.addAttribute("title", "Заголовок");
-        model.addAttribute("postId", postId);
-        model.addAttribute("content", post.getContent());
+        PostWithCommentsDto post = commentsService.getPostWithComments(postId);
+        model.addAttribute("post", post.getPost());
         model.addAttribute("comments", post.getComments());
         return "postPage";
     }
@@ -59,9 +57,6 @@ public class PostsController {
                                 @AuthenticationPrincipal UserDetails userDetails,
                                 Model model) {
         model.addAttribute("login", userDetails != null ? userDetails.getUsername() : null);
-        //Получить имя user по userId
-
-//        long userId = userService.findByLogin(userLogin).getId();
         List<PostDto> posts = postsService.getPostsByUserId(userId);
         model.addAttribute("posts", posts);
         return "postByUser";
