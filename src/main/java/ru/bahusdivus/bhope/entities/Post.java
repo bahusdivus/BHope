@@ -14,14 +14,14 @@ import java.util.Set;
 @NoArgsConstructor
 @ToString(exclude = {"user", "deleted", "date", "comments"})
 @Entity
-@Table(name = "POSTS")
-@SequenceGenerator(name = "POST_SEQ",
+@Table(name = "t_POSTS")
+@SequenceGenerator(name = "postSeqGenerator",
         sequenceName = "POST_SEQ", allocationSize = 10)
 public class Post {
 
     @Id
     @Column(name = "ID")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "POST_SEQ")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "postSeqGenerator")
     private Long id;
 
     @Column(name = "HEADER", nullable = false)

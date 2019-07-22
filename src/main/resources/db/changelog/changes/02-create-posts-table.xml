@@ -17,7 +17,7 @@
     </changeSet>
 
     <changeSet id="create posts table" author="Vladimir">
-        <createTable tableName="POSTS">
+        <createTable tableName="t_POSTS">
             <column name="ID" type="BIGINT">
                 <constraints nullable="false" unique="true" primaryKey="true"/>
             </column>
@@ -37,9 +37,9 @@
             </column>
         </createTable>
 
-        <addForeignKeyConstraint baseTableName="POSTS" baseColumnNames="USER_ID"
+        <addForeignKeyConstraint baseTableName="t_POSTS" baseColumnNames="USER_ID"
                                  constraintName="FK_POSTS_USER"
-                                 referencedTableName="USERS" referencedColumnNames="ID"/>
+                                 referencedTableName="t_USERS" referencedColumnNames="ID"/>
         <rollback>
             <sql>
                 ALTER TABLE POSTS DROP FOREIGN KEY FK_POSTS_USER;

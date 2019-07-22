@@ -10,7 +10,7 @@
             <column name="ID" valueNumeric="nextval('USER_SEQ')"/>
             <column name="LOGIN" value="User1"/>
             <column name="NAME" value="UserName 1"/>
-            <column name="PASSWORD" value="notHashPass"/>
+            <column name="PASSWORD" value="$2a$10$Jl.R0i9ltAF/TlAckUUBguJKo/C6xTytO/13tXu0v35cVva1Qy9zC"/> <!--user1-->
             <column name="EMAIL" value="user1@email.test"/>
             <column name="IS_ADMIN" value="true"/>
             <column name="DATE" value="2019-07-16 23:07:55+03"/>
@@ -20,7 +20,7 @@
             <column name="ID" valueNumeric="nextval('USER_SEQ')"/>
             <column name="LOGIN" value="User2"/>
             <column name="NAME" value="UserName 2"/>
-            <column name="PASSWORD" value="notHashPass"/>
+            <column name="PASSWORD" value="$2a$10$S5MB4mPjCv1ZK7pf7468w.pHqfmg5YjoW/ZTEU7W7sX/td6Q940a."/> <!--user2-->
             <column name="EMAIL" value="user2@email.test"/>
             <column name="IS_ADMIN" value="false"/>
             <column name="DATE" value="2019-07-16 23:08:55+03"/>
@@ -30,7 +30,7 @@
             <column name="ID" valueNumeric="nextval('USER_SEQ')"/>
             <column name="LOGIN" value="User3"/>
             <column name="NAME" value="UserName 3"/>
-            <column name="PASSWORD" value="notHashPass"/>
+            <column name="PASSWORD" value="$2a$10$Z5qskCBTkCclHw.uZmcuvOMRMVNWyeadBzToG9pF2SJCaxPdwSyWC"/> <!--user3-->
             <column name="EMAIL" value="user3@email.test"/>
             <column name="IS_ADMIN" value="false"/>
             <column name="DATE" value="2019-07-16 23:09:55+03"/>
