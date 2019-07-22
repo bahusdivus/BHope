@@ -1,22 +1,27 @@
 <div th:replace="fragments/header" xmlns:th="http://www.w3.org/1999/xhtml"></div>
 <div th:replace="fragments/navbar"></div>
-    <div class="row">
-        <div class="col-sm-12">
-            <a th:href="${'/post'}">Добавить пост</a>
-                <div th:each="post : ${posts}">
-                    <div class="border rounded p-2">
-                        <p th:text="${post.title}" class="bg-secondary"></p>
-                        <a th:href="${'/post/' + post.id + '/edit/'}">Редактировать</a>
-                        <a th:href="${'/post/' + post.id + '/delete/'}">Удалить</a>
-                        <p th:if="${post.content.length() > 150}"  th:text="${#strings.substring(post.content,0,150)}"></p>
-                        <p th:unless="${post.content.length() > 150}"  th:text="${post.content}"></p>
-                        <p th:text="${post.user.name + ' ' + post.date + '   Комментарии ' + post.countComments}"></p>
-                        <p>
-                            <a th:href="${'/post/' + post.id}">Подробнее</a>
-                        </p>
-                    </div>
-                </div>
+<div class="row">
+    <div class="col-sm-12">
+        <form th:object="${user}" th:action="@{/findByUserName}" method="post">
+            <input type="text" th:field="*{name}" />
+            <input type="submit" value="Поиск по автору" />
+        </form>
+        <a th:href="${'/post'}">Добавить пост</a>
+        <div th:each="post : ${posts}">
+            <div class="border rounded p-2">
+                <p th:text="${post.title}" class="bg-secondary"></p>
+                <a th:href="${'/post/' + post.id + '/edit/'}">Редактировать</a>
+                <a th:href="${'/post/' + post.id + '/delete/'}">Удалить</a>
+                <p th:if="${post.content.length() > 150}"  th:text="${#strings.substring(post.content,0,150)}"></p>
+                <p th:unless="${post.content.length() > 150}"  th:text="${post.content}"></p>
+                <p th:text="${post.user.name + ' ' + post.date + '   Комментарии ' + post.countComments}"></p>
+                <p>
+                    <a th:href="${'/post/' + post.id}">Подробнее</a>
+                </p>
             </div>
+            <a href="/">Все посты</a>
         </div>
     </div>
+</div>
+</div>
 <div th:replace="fragments/footer"></div>

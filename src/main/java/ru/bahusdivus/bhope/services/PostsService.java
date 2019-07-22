@@ -15,4 +15,5 @@ public interface PostsService {
     PostDto getPost(long id);
     List<PostDto> getPosts();
     List<PostDto> getPostsByUserId(long userId);
+    List<PostDto> getPostsByUserName(String userName);
 }

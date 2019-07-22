@@ -24,8 +24,8 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "postSeqGenerator")
     private Long id;
 
-    @Column(name = "HEADER", nullable = false)
-    private String header;
+    @Column(name = "TITLE", nullable = false)
+    private String title;
 
     @Column(name = "CONTENT", nullable = false)
     private String content;
@@ -40,17 +40,14 @@ public class Post {
     @Column(name = "DELETED", nullable = false)
     private boolean deleted;
 
+    @Column(name = "LIKE_COUNT")
+    private Integer likeCount;
+
     @OneToMany(
             mappedBy = "post",
             fetch = FetchType.EAGER
     )
     private Set<Comment> comments = new LinkedHashSet<>();
-
-    public Post(long id, String header, String content) {
-        this.id = id;
-        this.header = header;
-        this.content = content;
-    }
 
     public Post(UserDto userDto) {
         this.user = new User(userDto.getId());

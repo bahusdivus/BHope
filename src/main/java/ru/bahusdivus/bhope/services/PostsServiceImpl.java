@@ -21,7 +21,7 @@ public class PostsServiceImpl implements PostsService {
 
         Post post = postRepository.findById(postDto.getId())
                 .orElse(new Post(postDto.getUser()));
-        post.setHeader(postDto.getTitle());
+        post.setTitle(postDto.getTitle());
         post.setContent(postDto.getContent());
         postRepository.save(post);
     }
@@ -51,6 +51,12 @@ public class PostsServiceImpl implements PostsService {
     @Override
     public List<PostDto> getPostsByUserId(long userId) {
         List<Post> posts = postRepository.findByUserId(userId);
+        return posts.stream().map(PostDto::new).collect(Collectors.toList());
+    }
+
+    @Override
+     public List<PostDto> getPostsByUserName(String userName) {
+        List<Post> posts = postRepository.findByUserName(userName);
         return posts.stream().map(PostDto::new).collect(Collectors.toList());
     }
 }
