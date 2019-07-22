@@ -8,19 +8,24 @@
         </form>
         <a th:href="${'/post'}">Добавить пост</a>
         <div th:each="post : ${posts}">
+            <div>Самое интересное за последнюю неделю</div>
             <div class="border rounded p-2">
-                <p th:text="${post.title}" class="bg-secondary"></p>
-                <a th:href="${'/post/' + post.id + '/edit/'}">Редактировать</a>
-                <a th:href="${'/post/' + post.id + '/delete/'}">Удалить</a>
-                <p th:if="${post.content.length() > 150}"  th:text="${#strings.substring(post.content,0,150)}"></p>
-                <p th:unless="${post.content.length() > 150}"  th:text="${post.content}"></p>
-                <p th:text="${post.user.name + ' ' + post.date + '   Комментарии ' + post.countComments}"></p>
+                <form th:action="@{/incrementLikeCount}" method="post" th:object="${postDto}">
+                    <p th:text="${post.title}" class="bg-secondary"></p>
+                    <a th:href="${'/post/' + post.id + '/edit/'}">Редактировать</a>
+                    <a th:href="${'/post/' + post.id + '/delete/'}">Удалить</a>
+                    <p th:if="${post.content.length() > 150}"  th:text="${#strings.substring(post.content,0,150)}"></p>
+                    <p th:unless="${post.content.length() > 150}"  th:text="${post.content}"></p>
+                    <p th:text="${post.user.name + ' ' + post.date + '   Комментарии ' + post.countComments}"></p>
+                    <input type="hidden" name="id" th:value="${post.id}"  />
+                    <input type="submit" th:value="${post.likeCount}" />
+                </form>
                 <p>
                     <a th:href="${'/post/' + post.id}">Подробнее</a>
                 </p>
             </div>
-            <a href="/">Все посты</a>
         </div>
+        <a href="/">Все посты</a>
     </div>
 </div>
 </div>

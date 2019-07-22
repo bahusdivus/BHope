@@ -41,7 +41,7 @@ public class Post {
     private boolean deleted;
 
     @Column(name = "LIKE_COUNT")
-    private Integer likeCount;
+    private int likeCount;
 
     @OneToMany(
             mappedBy = "post",

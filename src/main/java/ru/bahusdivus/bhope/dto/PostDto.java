@@ -15,7 +15,7 @@ public class PostDto {
     private String content;
     private LocalDateTime date;
     private boolean deleted;
-    private Integer likeCount;
+    private int likeCount;
     private UserDto user;
     private int countComments;
 
