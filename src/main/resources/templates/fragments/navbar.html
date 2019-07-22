@@ -1,44 +1,22 @@
-<div class="row bg-secondary">
-    <div class="col-sm-12" th:if="${login} != null">
-        <table border="1" cellpadding="1" cellspacing="1" style="width:100%">
-            <tbody>
-            <tr>
-                <td style="text-align:left">
-                    <form th:action="@{/}" method="get">
-                        <input type="submit" value="Главная"/>
-                    </form>
-                </td>
-                <td>
-                    <a th:href="'/users/' + ${login} + '/posts'"><span th:text="${login}"/></a>
-                </td>
-                <td style="text-align:right">
-                    <form th:action="@{/logout}" method="post">
-                        <input type="submit" value="Выход"/>
-                    </form>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+<nav class="navbar navbar-expand sticky-top navbar-light bg-white topbar mb-4 static-top shadow">
+    <div>
+        <a href="/" class="navbar-brand text-white btn btn-primary btn-icon-split btn-lg">
+            <span class="icon text-white-80">
+                <i class="fab fa-bootstrap"></i>
+            </span>
+            <span class="text text-lg font-weight-bold">Hope</span>
+        </a>
     </div>
-    <div class="col-sm-12" th:if="${login} == null">
-        <table border="1" cellpadding="1" cellspacing="1" style="width:100%">
-            <tbody>
-            <tr>
-                <td style="text-align:left">
-                    <form th:action="@{/}" method="get">
-                        <input type="submit" value="Главная"/>
-                    </form>
-                </td>
-                <td style="text-align:right">
-                    <form th:action="@{/registration}" style="display: inline-block">
-                        <input type="submit" value="Регистрация"/>
-                    </form>
-                    <form th:action="@{/login}" style="display: inline-block">
-                        <input type="submit" value="Вход"/>
-                    </form>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+    <div class="ml-auto">
+        <div th:if="${login} != null" th:remove="tag">
+            <form th:action="@{/logout}" method="post">
+                <a th:href="'/users/' + ${login} + '/posts'"><span th:text="${login}"/></a>
+                <a th:href="#" onclick="$(this).parent().submit();"><span th:text="${login}"/></a>
+            </form>
+        </div>
+        <div th:if="${login} == null" th:remove="tag">
+            <a th:href="@{/registration}">Регистрация</a>
+            <a th:href="@{/login}">Вход</a>
+        </div>
     </div>
-</div>
+</nav>
