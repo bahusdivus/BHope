@@ -6,7 +6,7 @@
     http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
 
     <changeSet id="initial users table" author="Vladimir">
-        <insert tableName="USERS">
+        <insert tableName="T_USERS">
             <column name="ID" valueNumeric="nextval('USER_SEQ')"/>
             <column name="LOGIN" value="User1"/>
             <column name="NAME" value="UserName 1"/>
@@ -16,7 +16,7 @@
             <column name="DATE" value="2019-07-16 23:07:55+03"/>
             <column name="DELETED" value="false"/>
         </insert>
-        <insert tableName="USERS">
+        <insert tableName="T_USERS">
             <column name="ID" valueNumeric="nextval('USER_SEQ')"/>
             <column name="LOGIN" value="User2"/>
             <column name="NAME" value="UserName 2"/>
@@ -26,7 +26,7 @@
             <column name="DATE" value="2019-07-16 23:08:55+03"/>
             <column name="DELETED" value="false"/>
         </insert>
-        <insert tableName="USERS">
+        <insert tableName="T_USERS">
             <column name="ID" valueNumeric="nextval('USER_SEQ')"/>
             <column name="LOGIN" value="User3"/>
             <column name="NAME" value="UserName 3"/>

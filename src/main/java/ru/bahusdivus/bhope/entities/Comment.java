@@ -13,7 +13,7 @@ import java.util.Set;
 @EqualsAndHashCode(of = "id")
 @ToString(exclude = {"user", "deleted", "date", "parent", "children", "post"})
 @Entity
-@Table(name = "t_COMMENTS")
+@Table(name = "T_COMMENTS")
 @SequenceGenerator(name = "commentSeqGenerator",
         sequenceName = "COMMENT_SEQ", allocationSize = 10)
 public class Comment {

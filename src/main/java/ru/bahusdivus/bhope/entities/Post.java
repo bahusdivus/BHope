@@ -14,7 +14,7 @@ import java.util.Set;
 @NoArgsConstructor
 @ToString(exclude = {"user", "deleted", "date", "comments"})
 @Entity
-@Table(name = "t_POSTS")
+@Table(name = "T_POSTS")
 @SequenceGenerator(name = "postSeqGenerator",
         sequenceName = "POST_SEQ", allocationSize = 10)
 public class Post {
