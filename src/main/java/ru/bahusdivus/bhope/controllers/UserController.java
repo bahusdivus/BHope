@@ -25,20 +25,20 @@ public class UserController {
 
     @RequestMapping("/main")
     public String main() {
-        return "redirect:/post/1";
+        return "redirect:/";
     }
 
     @RequestMapping("/login")
     public String login(Model model, String error, String logout, HttpServletRequest request) {
         if (logout != null) {
-            model.addAttribute("logout", "You have been logged out successfully.");
+            model.addAttribute("logout", "Вы успешно вышли из учетной записи");
         }
         return "login";
     }
 
     @RequestMapping("/loginError")
     public String loginError(Model model, String username) {
-        model.addAttribute("error", "Your username and password is invalid.");
+        model.addAttribute("error", "Неверная пара логин-пароль");
         model.addAttribute("username", username);
         return "login";
     }

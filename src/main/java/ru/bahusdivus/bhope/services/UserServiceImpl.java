@@ -29,12 +29,11 @@ public class UserServiceImpl implements UserService {
         } else {
             user.setAdmin(false);
         }
-
         userRepository.save(user);
     }
 
     @Override
     public User findByLogin(String login) {
-        return userRepository.findByLogin(login);
+        return userRepository.findUserByLoginIgnoreCase(login);
     }
 }

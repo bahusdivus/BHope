@@ -1,5 +1,5 @@
 <div class="row bg-secondary">
-    <div class="col-sm-12" th:if="${login} != null">
+    <div class="col-sm-12" th:if="${userDetails} != null">
         <table border="1" cellpadding="1" cellspacing="1" style="width:100%">
             <tbody>
             <tr>
@@ -9,7 +9,7 @@
                     </form>
                 </td>
                 <td>
-                    <a th:href="'/users/' + ${login} + '/posts'"><span th:text="${login}"/></a>
+                    <a th:href="'/users/' + ${userDetails.id} + '/posts'"><span th:text="${userDetails.username}"/></a>
                 </td>
                 <td style="text-align:right">
                     <form th:action="@{/logout}" method="post">
@@ -20,7 +20,7 @@
             </tbody>
         </table>
     </div>
-    <div class="col-sm-12" th:if="${login} == null">
+    <div class="col-sm-12" th:if="${userDetails} == null">
         <table border="1" cellpadding="1" cellspacing="1" style="width:100%">
             <tbody>
             <tr>
@@ -40,5 +40,6 @@
             </tr>
             </tbody>
         </table>
+        <div th:if="${message} != null" th:text="${message}"/>
     </div>
 </div>

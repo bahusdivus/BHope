@@ -1,7 +1,6 @@
 package ru.bahusdivus.bhope.controllers;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -14,7 +13,7 @@ import ru.bahusdivus.bhope.dto.PostWithCommentsDto;
 import ru.bahusdivus.bhope.dto.UserDto;
 import ru.bahusdivus.bhope.services.CommentsService;
 import ru.bahusdivus.bhope.services.PostsService;
-import ru.bahusdivus.bhope.services.UserService;
+import ru.bahusdivus.bhope.utils.UserDetailsUserImpl;
 
 import java.util.List;
 
@@ -23,17 +22,15 @@ public class PostsController {
 
     private final CommentsService commentsService;
     private final PostsService postsService;
-    private final UserService userService;
 
-    public PostsController(CommentsService commentsService, PostsService postsService, UserService userService) {
+    public PostsController(CommentsService commentsService, PostsService postsService) {
         this.commentsService = commentsService;
         this.postsService = postsService;
-        this.userService = userService;
     }
 
     @RequestMapping("/")
-    public String getIndex(@AuthenticationPrincipal UserDetails userDetails, Model model) {
-        model.addAttribute("login", userDetails != null ? userDetails.getUsername() : null);
+    public String getIndex(@AuthenticationPrincipal UserDetailsUserImpl userDetails, Model model) {
+        model.addAttribute("userDetails", userDetails);
         List<PostDto> posts = postsService.getPostByLike();
         UserDto userDto = new UserDto();
         PostDto postDto = new PostDto();
@@ -45,9 +42,9 @@ public class PostsController {
 
     @RequestMapping("/users/{userId}/posts")
     public String getPostByUser(@PathVariable("userId") long userId,
-                                @AuthenticationPrincipal UserDetails userDetails,
+                                @AuthenticationPrincipal UserDetailsUserImpl userDetails,
                                 Model model) {
-        model.addAttribute("login", userDetails != null ? userDetails.getUsername() : null);
+        model.addAttribute("userDetails", userDetails);
         List<PostDto> posts = postsService.getPostsByUserId(userId);
         model.addAttribute("posts", posts);
         return "postByUser";
@@ -55,9 +52,9 @@ public class PostsController {
 
     @RequestMapping("/find/{name}")
     public String getPostByUserName(@PathVariable("name") String name,
-                                    @AuthenticationPrincipal UserDetails userDetails,
+                                    @AuthenticationPrincipal UserDetailsUserImpl userDetails,
                                     Model model) {
-        model.addAttribute("login", userDetails != null ? userDetails.getUsername() : null);
+        model.addAttribute("userDetails", userDetails);
         List<PostDto> posts = postsService.getPostsByUserName(name);
         model.addAttribute("name", name);
         model.addAttribute("posts", posts);
@@ -65,29 +62,29 @@ public class PostsController {
     }
 
     @RequestMapping("/post")
-    public String getNewPostForm(@AuthenticationPrincipal UserDetails userDetails,
+    public String getNewPostForm(@AuthenticationPrincipal UserDetailsUserImpl userDetails,
                                  Model model) throws IllegalAccessException {
 
         if (userDetails == null) {
             throw new IllegalAccessException("нужно зарегистрироваться");
         }
-        model.addAttribute("login", userDetails.getUsername());
+        model.addAttribute("userDetails", userDetails);
 
         PostDto postDto = new PostDto();
-        postDto.setUser(new UserDto(1));
+        postDto.setUser(new UserDto(userDetails.getId()));
         model.addAttribute("post", postDto);
         return "editPost";
     }
 
     @RequestMapping("/post/{postId}/edit")
     public String getEditPostForm(@PathVariable("postId") long postId,
-                                  @AuthenticationPrincipal UserDetails userDetails,
+                                  @AuthenticationPrincipal UserDetailsUserImpl userDetails,
                                   Model model) throws IllegalAccessException {
 
         if (userDetails == null) {
             throw new IllegalAccessException("нужно зарегистрироваться");
         }
-        model.addAttribute("login", userDetails.getUsername());
+        model.addAttribute("userDetails", userDetails);
 
         PostDto postDto = postsService.getPost(postId);
         model.addAttribute("post", postDto);
@@ -96,7 +93,7 @@ public class PostsController {
 
     @RequestMapping("/post/{postId}/delete")
     public String deletePost(@PathVariable("postId") long postId,
-                             @AuthenticationPrincipal UserDetails userDetails) throws IllegalAccessException {
+                             @AuthenticationPrincipal UserDetailsUserImpl userDetails) throws IllegalAccessException {
         if (userDetails == null) {
             throw new IllegalAccessException("нужно зарегистрироваться");
         }
@@ -123,18 +120,18 @@ public class PostsController {
 
     @RequestMapping("/post/{postId}/comment")
     public String getNewCommentForm(@PathVariable("postId") long postId,
-                                    @AuthenticationPrincipal UserDetails userDetails,
+                                    @AuthenticationPrincipal UserDetailsUserImpl userDetails,
                                     Model model) throws IllegalAccessException {
         return getNewCommentFormWithParent(postId, 0, userDetails, model);
     }
 
     @RequestMapping("/post/{postId}")
     public String getPage(@PathVariable("postId") long postId,
-                          @AuthenticationPrincipal UserDetails userDetails,
+                          @AuthenticationPrincipal UserDetailsUserImpl userDetails,
                           Model model) {
-        model.addAttribute("login", userDetails != null ? userDetails.getUsername() : null);
+        model.addAttribute("userDetails", userDetails);
 
-        model.addAttribute("login", userDetails != null ? userDetails.getUsername() : null);
+        model.addAttribute("userDetails", userDetails);
         PostWithCommentsDto post = commentsService.getPostWithComments(postId);
         model.addAttribute("post", post.getPost());
         model.addAttribute("comments", post.getComments());
@@ -144,7 +141,7 @@ public class PostsController {
     @RequestMapping("/post/{postId}/comment/{id}")
     public String getEditCommentForm(@PathVariable("postId") long postId,
                                      @PathVariable("id") long id,
-                                     @AuthenticationPrincipal UserDetails userDetails,
+                                     @AuthenticationPrincipal UserDetailsUserImpl userDetails,
                                      Model model) throws IllegalAccessException {
         if (userDetails == null) {
             throw new IllegalAccessException("нужно зарегистрироваться");
@@ -157,18 +154,18 @@ public class PostsController {
     @RequestMapping("/post/{postId}/comment/{id}/comment")
     public String getNewCommentFormWithParent(@PathVariable("postId") long postId,
                                               @PathVariable("id") long id,
-                                              @AuthenticationPrincipal UserDetails userDetails,
+                                              @AuthenticationPrincipal UserDetailsUserImpl userDetails,
                                               Model model) throws IllegalAccessException {
 
         if (userDetails == null) {
             throw new IllegalAccessException("нужно зарегистрироваться");
         }
-        model.addAttribute("login", userDetails.getUsername());
+        model.addAttribute("userDetails", userDetails);
 
         CommentDto commentDto = new CommentDto();
         commentDto.setPost(postId);
         commentDto.setParent(id);
-        long userId = userService.findByLogin(userDetails.getUsername()).getId();
+        long userId = userDetails.getId();
         commentDto.setUser(new UserDto(userId));
         model.addAttribute("comment", commentDto);
         return "commentPage";
@@ -177,7 +174,7 @@ public class PostsController {
     @RequestMapping("/post/{postId}/comment/{id}/delete")
     public String deleteComment(@PathVariable("postId") long postId,
                                 @PathVariable("id") long id,
-                                @AuthenticationPrincipal UserDetails userDetails) throws IllegalAccessException {
+                                @AuthenticationPrincipal UserDetailsUserImpl userDetails) throws IllegalAccessException {
         if (userDetails == null) {
             throw new IllegalAccessException("нужно зарегистрироваться");
         }

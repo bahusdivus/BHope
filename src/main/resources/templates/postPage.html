@@ -13,9 +13,11 @@
                         <div th:unless="${comment.deleted}">
                             <p th:text="${comment.user.name + ' ' + comment.date}" class="bg-secondary text-light"></p>
                             <p th:text="${comment.content}"></p>
-                            <p>
-                                <a th:href="${'/post/' + postId + '/comment/' + comment.id}">Редактировать</a>&nbsp;|&nbsp;
-                                <a th:href="${'/post/' + postId + '/comment/' + comment.id + '/delete'}">Удалить</a>&nbsp;|&nbsp;
+                            <p th:if="${userDetails}">
+                                <a th:if="${userDetails.id == comment.user.id}"
+                                   th:href=" ${'/post/' + postId + '/comment/' + comment.id}">Редактировать</a>&nbsp;|&nbsp;
+                                <a th:if="${userDetails.id == comment.user.id or userDetails.admin}"
+                                   th:href="${'/post/' + postId + '/comment/' + comment.id + '/delete'}">Удалить</a>&nbsp;|&nbsp;
                                 <a th:href="${'/post/' + postId + '/comment/' + comment.id + '/comment'}">Комментировать</a>
                             </p>
                         </div>
