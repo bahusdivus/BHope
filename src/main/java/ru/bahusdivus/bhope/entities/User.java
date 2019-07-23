@@ -13,14 +13,14 @@ import java.util.Set;
 @EqualsAndHashCode(of = "id")
 @ToString(exclude = {"deleted", "date"})
 @Entity
-@Table(name = "USERS")
-@SequenceGenerator(name = "USER_SEQ",
+@Table(name = "T_USERS")
+@SequenceGenerator(name = "userSeqGenerator",
         sequenceName = "USER_SEQ", allocationSize = 10)
 public class User {
 
     @Id
     @Column(name = "ID")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "USER_SEQ")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "userSeqGenerator")
     private Long id;
 
     @Column(name = "LOGIN", nullable = false)

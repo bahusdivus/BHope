@@ -17,7 +17,7 @@
     </changeSet>
 
     <changeSet id="create comments table" author="Vladimir">
-        <createTable tableName="COMMENTS">
+        <createTable tableName="T_COMMENTS">
             <column name="ID" type="BIGINT">
                 <constraints nullable="false" unique="true" primaryKey="true"/>
             </column>
@@ -41,15 +41,15 @@
             </column>
         </createTable>
 
-        <addForeignKeyConstraint baseTableName="COMMENTS" baseColumnNames="USER_ID"
+        <addForeignKeyConstraint baseTableName="T_COMMENTS" baseColumnNames="USER_ID"
                                  constraintName="FK_COMMENTS_USER"
-                                 referencedTableName="USERS" referencedColumnNames="ID"/>
-        <addForeignKeyConstraint baseTableName="COMMENTS" baseColumnNames="POST_ID"
+                                 referencedTableName="T_USERS" referencedColumnNames="ID"/>
+        <addForeignKeyConstraint baseTableName="T_COMMENTS" baseColumnNames="POST_ID"
                                  constraintName="FK_COMMENTS_POST"
-                                 referencedTableName="POSTS" referencedColumnNames="ID"/>
-        <addForeignKeyConstraint baseTableName="COMMENTS" baseColumnNames="PARENT_ID"
+                                 referencedTableName="T_POSTS" referencedColumnNames="ID"/>
+        <addForeignKeyConstraint baseTableName="T_COMMENTS" baseColumnNames="PARENT_ID"
                                  constraintName="FK_COMMENTS_PARENT"
-                                 referencedTableName="COMMENTS" referencedColumnNames="ID"/>
+                                 referencedTableName="T_COMMENTS" referencedColumnNames="ID"/>
         <rollback>
             <sql>
                 ALTER TABLE COMMENTS DROP FOREIGN KEY FK_COMMENTS_USER;

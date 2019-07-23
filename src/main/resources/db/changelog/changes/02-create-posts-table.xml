@@ -17,11 +17,11 @@
     </changeSet>
 
     <changeSet id="create posts table" author="Vladimir">
-        <createTable tableName="POSTS">
+        <createTable tableName="T_POSTS">
             <column name="ID" type="BIGINT">
                 <constraints nullable="false" unique="true" primaryKey="true"/>
             </column>
-            <column name="HEADER" type="VARCHAR(250)">
+            <column name="TITLE" type="VARCHAR(250)">
                 <constraints nullable="false"/>
             </column>
             <column name="CONTENT" type="TEXT">
@@ -35,11 +35,13 @@
             <column name="DELETED" type="BOOLEAN">
                 <constraints nullable="false"/>
             </column>
+            <column name="LIKE_COUNT" type="INT">
+            </column>
         </createTable>
 
-        <addForeignKeyConstraint baseTableName="POSTS" baseColumnNames="USER_ID"
+        <addForeignKeyConstraint baseTableName="T_POSTS" baseColumnNames="USER_ID"
                                  constraintName="FK_POSTS_USER"
-                                 referencedTableName="USERS" referencedColumnNames="ID"/>
+                                 referencedTableName="T_USERS" referencedColumnNames="ID"/>
         <rollback>
             <sql>
                 ALTER TABLE POSTS DROP FOREIGN KEY FK_POSTS_USER;

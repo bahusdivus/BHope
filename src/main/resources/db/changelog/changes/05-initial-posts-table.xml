@@ -6,41 +6,45 @@
     http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
 
     <changeSet id="initial posts table" author="Vladimir">
-        <insert tableName="POSTS">
+        <insert tableName="T_POSTS">
             <column name="ID" valueNumeric="nextval('POST_SEQ')"/>
-            <column name="HEADER" value="Заголовок1"/>
+            <column name="TITLE" value="Заголовок1"/>
             <column name="CONTENT" value="Пост 1"/>
-            <column name="USER_ID" valueComputed="(SELECT ID FROM USERS WHERE LOGIN = 'User1')"/>
+            <column name="USER_ID" valueComputed="(SELECT ID FROM T_USERS WHERE LOGIN = 'User1')"/>
             <column name="DATE" value="2019-07-16 23:55:55+03"/>
             <column name="DELETED" value="false"/>
+            <column name="LIKE_COUNT" value="0"/>
         </insert>
-        <insert tableName="POSTS">
+        <insert tableName="T_POSTS">
             <column name="ID" valueNumeric="nextval('POST_SEQ')"/>
-            <column name="HEADER" value="Заголовок2"/>
+            <column name="TITLE" value="Заголовок2"/>
             <column name="CONTENT" value="Пост 2"/>
-            <column name="USER_ID" valueComputed="(SELECT ID FROM USERS WHERE LOGIN = 'User1')"/>
+            <column name="USER_ID" valueComputed="(SELECT ID FROM T_USERS WHERE LOGIN = 'User1')"/>
             <column name="DATE" value="2019-07-17 01:07:55+03"/>
             <column name="DELETED" value="false"/>
+            <column name="LIKE_COUNT" value="0"/>
         </insert>
-        <insert tableName="POSTS">
+        <insert tableName="T_POSTS">
             <column name="ID" valueNumeric="nextval('POST_SEQ')"/>
-            <column name="HEADER" value="Заголовок3"/>
+            <column name="TITLE" value="Заголовок3"/>
             <column name="CONTENT" value="Пост 3"/>
-            <column name="USER_ID" valueComputed="(SELECT ID FROM USERS WHERE LOGIN = 'User2')"/>
+            <column name="USER_ID" valueComputed="(SELECT ID FROM T_USERS WHERE LOGIN = 'User2')"/>
             <column name="DATE" value="2019-07-17 02:07:55+03"/>
             <column name="DELETED" value="false"/>
+            <column name="LIKE_COUNT" value="0"/>
         </insert>
-        <insert tableName="POSTS">
+        <insert tableName="T_POSTS">
             <column name="ID" valueNumeric="nextval('POST_SEQ')"/>
-            <column name="HEADER" value="Заголовок4"/>
+            <column name="TITLE" value="Заголовок4"/>
             <column name="CONTENT" value="Пост 4 будет чуть длинее"/>
-            <column name="USER_ID" valueComputed="(SELECT ID FROM USERS WHERE LOGIN = 'User2')"/>
+            <column name="USER_ID" valueComputed="(SELECT ID FROM T_USERS WHERE LOGIN = 'User2')"/>
             <column name="DATE" value="2019-07-17 02:11:55+03"/>
             <column name="DELETED" value="false"/>
+            <column name="LIKE_COUNT" value="0"/>
         </insert>
-        <insert tableName="POSTS">
+        <insert tableName="T_POSTS">
             <column name="ID" valueNumeric="nextval('POST_SEQ')"/>
-            <column name="HEADER" value="Заголовок 5: длиннопост?"/>
+            <column name="TITLE" value="Заголовок 5: длиннопост?"/>
             <column name="CONTENT" value="Пост 5 это прям беда не знаю что писать
 Фреймворк Spring MVC обеспечивает архитектуру паттерна Model — View — Controller (Модель — Отображение (далее — Вид) — Контроллер) при помощи слабо связанных готовых компонентов. Паттерн MVC разделяет аспекты приложения (логику ввода, бизнес-логику и логику UI), обеспечивая при этом свободную связь между ними.
 
@@ -55,9 +59,10 @@ Controller (Контроллер) обрабатывает запрос поль
 После того, как Вид (View) создан, DispatcherServlet отправляет данные Модели в виде атрибутов в Вид, который в конечном итоге отображается в браузере.
 
 Все вышеупомянутые компоненты, а именно, HandlerMapping, Controller и ViewResolver, являются частями интерфейса WebApplicationContext extends ApplicationContext, с некоторыми дополнительными особенностями, необходимыми для создания web-приложений."/>
-            <column name="USER_ID" valueComputed="(SELECT ID FROM USERS WHERE LOGIN = 'User1')"/>
+            <column name="USER_ID" valueComputed="(SELECT ID FROM T_USERS WHERE LOGIN = 'User1')"/>
             <column name="DATE" value="2019-07-17 02:11:55+03"/>
             <column name="DELETED" value="false"/>
+            <column name="LIKE_COUNT" value="0"/>
         </insert>
     </changeSet>
 </databaseChangeLog>

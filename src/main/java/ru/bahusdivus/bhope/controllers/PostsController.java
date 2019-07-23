@@ -31,23 +31,14 @@ public class PostsController {
         this.userService = userService;
     }
 
-    @RequestMapping("/post/{postId}")
-    public String getPage(@PathVariable("postId") long postId,
-                          @AuthenticationPrincipal UserDetails userDetails,
-                          Model model) {
-        model.addAttribute("login", userDetails != null ? userDetails.getUsername() : null);
-
-        model.addAttribute("login", userDetails != null ? userDetails.getUsername() : null);
-        PostWithCommentsDto post = commentsService.getPostWithComments(postId);
-        model.addAttribute("post", post.getPost());
-        model.addAttribute("comments", post.getComments());
-        return "postPage";
-    }
-
     @RequestMapping("/")
     public String getIndex(@AuthenticationPrincipal UserDetails userDetails, Model model) {
         model.addAttribute("login", userDetails != null ? userDetails.getUsername() : null);
-        List<PostDto> posts = postsService.getPosts();
+        List<PostDto> posts = postsService.getPostByLike();
+        UserDto userDto = new UserDto();
+        PostDto postDto = new PostDto();
+        model.addAttribute("postDto", postDto);
+        model.addAttribute("user", userDto);
         model.addAttribute("posts", posts);
         return "index";
     }
@@ -60,6 +51,17 @@ public class PostsController {
         List<PostDto> posts = postsService.getPostsByUserId(userId);
         model.addAttribute("posts", posts);
         return "postByUser";
+    }
+
+    @RequestMapping("/find/{name}")
+    public String getPostByUserName(@PathVariable("name") String name,
+                                    @AuthenticationPrincipal UserDetails userDetails,
+                                    Model model) {
+        model.addAttribute("login", userDetails != null ? userDetails.getUsername() : null);
+        List<PostDto> posts = postsService.getPostsByUserName(name);
+        model.addAttribute("name", name);
+        model.addAttribute("posts", posts);
+        return "findByUserName";
     }
 
     @RequestMapping("/post")
@@ -103,8 +105,19 @@ public class PostsController {
     }
 
     @RequestMapping(value = "savePost", method = RequestMethod.POST)
-    public String savePost(@ModelAttribute PostDto post) {
-        postsService.savePost(post);
+    public String savePost(@ModelAttribute PostDto postDto) {
+        postsService.savePost(postDto);
+        return "redirect:/";
+    }
+
+    @RequestMapping(value = "findByUserName", method = RequestMethod.POST)
+    public String findByUserName(@ModelAttribute UserDto userDto) {
+        return "redirect:/find/" + userDto.getName();
+    }
+
+    @RequestMapping(value = "incrementLikeCount", method = RequestMethod.POST)
+    public String incrementLikeCount(@ModelAttribute PostDto postDto) {
+        postsService.incrementLikeCount(postDto.getId());
         return "redirect:/";
     }
 
@@ -113,6 +126,19 @@ public class PostsController {
                                     @AuthenticationPrincipal UserDetails userDetails,
                                     Model model) throws IllegalAccessException {
         return getNewCommentFormWithParent(postId, 0, userDetails, model);
+    }
+
+    @RequestMapping("/post/{postId}")
+    public String getPage(@PathVariable("postId") long postId,
+                          @AuthenticationPrincipal UserDetails userDetails,
+                          Model model) {
+        model.addAttribute("login", userDetails != null ? userDetails.getUsername() : null);
+
+        model.addAttribute("login", userDetails != null ? userDetails.getUsername() : null);
+        PostWithCommentsDto post = commentsService.getPostWithComments(postId);
+        model.addAttribute("post", post.getPost());
+        model.addAttribute("comments", post.getComments());
+        return "postPage";
     }
 
     @RequestMapping("/post/{postId}/comment/{id}")

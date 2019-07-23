@@ -15,16 +15,18 @@ public class PostDto {
     private String content;
     private LocalDateTime date;
     private boolean deleted;
+    private int likeCount;
     private UserDto user;
     private int countComments;
 
     public PostDto(Post post) {
 
         id = post.getId();
-        title = post.getHeader();
+        title = post.getTitle();
         content = post.getContent();
         date = post.getDate();
         deleted = post.isDeleted();
+        likeCount = post.getLikeCount();
         user = new UserDto(post.getUser());
         countComments = post.getComments().size();
     }
