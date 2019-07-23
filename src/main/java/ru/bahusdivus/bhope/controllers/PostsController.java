@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.ui.Model;
-import ru.bahusdivus.bhope.dto.CommentDto;
 import ru.bahusdivus.bhope.dto.PostDto;
+import ru.bahusdivus.bhope.dto.CommentDto;
 import ru.bahusdivus.bhope.dto.PostWithCommentsDto;
 import ru.bahusdivus.bhope.dto.UserDto;
 import ru.bahusdivus.bhope.services.CommentsService;
@@ -34,13 +34,37 @@ public class PostsController {
     @RequestMapping("/")
     public String getIndex(@AuthenticationPrincipal UserDetails userDetails, Model model) {
         model.addAttribute("login", userDetails != null ? userDetails.getUsername() : null);
-        List<PostDto> posts = postsService.getPostByLike();
+        List<PostDto> posts = postsService.getPostsByLike();
         UserDto userDto = new UserDto();
         PostDto postDto = new PostDto();
         model.addAttribute("postDto", postDto);
         model.addAttribute("user", userDto);
         model.addAttribute("posts", posts);
         return "index";
+    }
+
+    @RequestMapping("/posts")
+    public String getPosts(@AuthenticationPrincipal UserDetails userDetails, Model model) {
+        model.addAttribute("login", userDetails != null ? userDetails.getUsername() : null);
+        List<PostDto> posts = postsService.getPostsOrderByDate();
+        UserDto userDto = new UserDto();
+        PostDto postDto = new PostDto();
+        model.addAttribute("postDto", postDto);
+        model.addAttribute("user", userDto);
+        model.addAttribute("posts", posts);
+        return "posts";
+    }
+
+    @RequestMapping("/posts/byLike")
+    public String getPostsByLike(@AuthenticationPrincipal UserDetails userDetails, Model model) {
+        model.addAttribute("login", userDetails != null ? userDetails.getUsername() : null);
+        List<PostDto> posts = postsService.getPostsOrderByLikeCount();
+        UserDto userDto = new UserDto();
+        PostDto postDto = new PostDto();
+        model.addAttribute("postDto", postDto);
+        model.addAttribute("user", userDto);
+        model.addAttribute("posts", posts);
+        return "posts";
     }
 
     @RequestMapping("/users/{userId}/posts")

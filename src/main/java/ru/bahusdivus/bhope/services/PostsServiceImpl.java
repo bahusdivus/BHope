@@ -54,17 +54,24 @@ public class PostsServiceImpl implements PostsService {
     }
 
     @Override
-    public List<PostDto> getPosts() {
-        List<Post> posts = postRepository.findAll();
+    public List<PostDto> getPostsOrderByDate() {
+        List<Post> posts = postRepository.findByDeletedFalseOrderByDateDesc();
         return posts.stream()
                 .map(PostDto::new)
-                .sorted(Comparator.comparing(PostDto::getDate).reversed())
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<PostDto> getPostByLike() {
-        List<Post> posts = postRepository.findAll();
+    public List<PostDto> getPostsOrderByLikeCount() {
+        List<Post> posts = postRepository.findByDeletedFalseOrderByLikeCountDesc();
+        return posts.stream()
+                .map(PostDto::new)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<PostDto> getPostsByLike() {
+        List<Post> posts = postRepository.findByDeletedFalse();
         return posts.stream()
                 .map(PostDto::new)
                 .sorted(Comparator.comparing(PostDto::getDate).thenComparing(PostDto::getLikeCount).reversed())
@@ -74,7 +81,7 @@ public class PostsServiceImpl implements PostsService {
 
     @Override
     public List<PostDto> getPostsByUserId(long userId) {
-        List<Post> posts = postRepository.findByUserId(userId);
+        List<Post> posts = postRepository.findByUserIdAndDeletedFalse(userId);
         return posts.stream()
                 .map(PostDto::new)
                 .sorted(Comparator.comparing(PostDto::getDate).reversed())
