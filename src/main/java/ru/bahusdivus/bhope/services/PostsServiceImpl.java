@@ -67,7 +67,7 @@ public class PostsServiceImpl implements PostsService {
         List<Post> posts = postRepository.findAll();
         return posts.stream()
                 .map(PostDto::new)
-                .sorted(Comparator.comparing(PostDto::getLikeCount).thenComparing(PostDto::getDate).reversed())
+                .sorted(Comparator.comparing(PostDto::getDate).thenComparing(PostDto::getLikeCount).reversed())
                 .limit(10)
                 .collect(Collectors.toList());
     }
@@ -83,7 +83,7 @@ public class PostsServiceImpl implements PostsService {
 
     @Override
      public List<PostDto> getPostsByUserName(String userName) {
-        List<Post> posts = postRepository.findByUserName(userName);
+        List<Post> posts = postRepository.findByUserName(userName.toLowerCase());
         return posts.stream()
                 .map(PostDto::new)
                 .sorted(Comparator.comparing(PostDto::getDate).reversed())
