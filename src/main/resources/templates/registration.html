@@ -18,13 +18,15 @@
       <td>
         <p style="text-align:right">Пароль:&nbsp;</p>
       </td>
-      <td><input type="password" name="password"/></td>
+      <td><input type="password" name="password" pattern=".{6,255}"
+                 title="пароль должен содержать не меньше 6 символов"/></td>
     </tr>
     <tr>
       <td>
         <p style="text-align:right">Подтверждение пароля:&nbsp;</p>
       </td>
-      <td><input type="password" name="confirmPassword"/></td>
+      <td><input type="password" name="confirmPassword" pattern=".{6,255}"
+                 title="пароль должен содержать не меньше 6 символов"/></td>
     </tr>
     <tr>
       <td>

@@ -5,7 +5,7 @@
             <h1 th:text="${post.title}"></h1>
             <p th:text="${post.user.name + ' ' + post.date}" class="bg-light text-muted"></p>
             <p th:text="${post.content}">content</p>
-            <p><a th:href="${'/post/' + post.id + '/comment'}">Комментировать</a></p>
+            <p><a th:if="${userDetails}" th:href="${'/post/' + post.id + '/comment'}">Комментировать</a></p>
             <h3>Comments</h3>
             <div th:fragment="commentsFragment">
                 <div th:each="comment : ${comments}">

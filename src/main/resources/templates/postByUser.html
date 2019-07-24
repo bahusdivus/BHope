@@ -2,7 +2,7 @@
 <div th:replace="fragments/navbar"></div>
     <div class="row">
         <div class="col-sm-12">
-            <h2>User</h2>
+            <h2 th:text="${userDetails.username}"/>
                 <div th:each="post : ${posts}">
                     <div class="border rounded p-2">
                         <p th:text="${post.title}"></p>
