@@ -21,7 +21,7 @@
         <div class="col-sm-12">
             <div class="card shadow mb-4">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                <h5 class="m-0 text-success text-uppercase">Самое интересное за последнюю неделю</h5>
+                <h5 class="m-0 text-secondary text-uppercase">Самое интересное за последнюю неделю</h5>
                 </div>
                 <div class="card-body" th:each="post : ${posts}">
                     <div class="card border-bottom-secondary shadow">
@@ -48,13 +48,12 @@
                                 <i class="fas fa-comments text-gray-300"></i>
                                 <span th:text="${post.countComments}"></span>
                             </p>
-                            <a class="like mb-0 mr-3" th:attr="data-id=${post.id}" href="#">
-                                <i class="fas fa-heart text-gray-300"></i>
-                                <span th:text="${post.likeCount}"></span>
-                            </a>
                             <form th:action="@{/incrementLikeCount}" method="post" th:object="${postDto}">
                                 <input type="hidden" name="id" th:value="${post.id}"  />
-                                <input type="submit" th:value="${post.likeCount}" />
+                                <a class="like mb-0 mr-3" href="#">
+                                    <i class="fas fa-heart text-gray-300"></i>
+                                    <span th:text="${post.likeCount}"></span>
+                                </a>
                             </form>
                             <a th:href="${'/post/' + post.id}">Подробнее</a>
                         </div>

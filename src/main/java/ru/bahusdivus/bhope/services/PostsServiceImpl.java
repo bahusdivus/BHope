@@ -42,8 +42,8 @@ public class PostsServiceImpl implements PostsService {
         Optional<Post> postOptional = postRepository.findById(id);
         if (postOptional.isPresent()) {
             Post post = postOptional.get();
-            int likeCount = post.getLikeCount();
-            post.setLikeCount(likeCount + 1);
+            int likeCount = post.getLikeCount() + 1;
+            post.setLikeCount(likeCount);
             postRepository.save(post);
             return likeCount;
         }
