@@ -2,10 +2,10 @@ package ru.bahusdivus.bhope.controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import ru.bahusdivus.bhope.dto.UserRegistrationDto;
 import ru.bahusdivus.bhope.entities.User;
 import ru.bahusdivus.bhope.services.SecurityService;
 import ru.bahusdivus.bhope.services.UserServiceImpl;
@@ -50,10 +50,36 @@ public class UserController {
     }
 
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
-    public String registration(@ModelAttribute("userForm") User userForm, BindingResult bindingResult,
-                               Model model, String isAdmin) {
+    public String registration(@ModelAttribute("userForm") UserRegistrationDto userForm,
+                               String error,
+                               Model model) {
         String password = userForm.getPassword();
-        userService.saveUser(userForm, isAdmin);
+        String confirmPassword = userForm.getConfirmPassword();
+        if (userService.findByLogin(userForm.getLogin()) != null) {
+            model.addAttribute("error", "Пользователь с таким именем уже зарегистрирован");
+            model.addAttribute("userForm", userForm);
+            return "registration";
+        } else if (userService.findByEmail(userForm.getEmail()) != null) {
+            model.addAttribute("error", "Пользователь с таким email уже зарегистрирован");
+            model.addAttribute("userForm", userForm);
+            return "registration";
+        } else if (("").equals(password)) {
+            model.addAttribute("error", "Пароль не может быть пустым");
+            model.addAttribute("userForm", userForm);
+            return "registration";
+        } else if (password.length() < 6) {
+            model.addAttribute("error", "Пароль должен быть не меньше 6 символов");
+            model.addAttribute("userForm", userForm);
+            return "registration";
+        } else if (!password.equals(confirmPassword)) {
+            model.addAttribute("error", "Пароль не соответствует подтверждению");
+            model.addAttribute("userForm", userForm);
+            return "registration";
+        }
+        if (("").equals(userForm.getName())) {
+            userForm.setName(userForm.getLogin());
+        }
+        userService.saveUser(userForm);
         securityService.autoLogin(userForm.getLogin(), password);
         return "redirect:/main";
     }

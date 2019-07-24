@@ -18,8 +18,8 @@
 			</tr>
 			</tbody>
 		</table>
-		<p th:if="${logout}" style="text-align:center; color:green">Вы успешно вышли из учетной записи</p>
-		<p th:if="${error}" style="text-align:center; color:red">Неверная пара логин-пароль</p>
+		<p th:if="${logout}" style="text-align:center; color:green"><span th:text="${logout}"/></p>
+		<p th:if="${error}" style="text-align:center; color:red"><span th:text="${error}"/></p>
 
 		<div style="text-align:center">
 			<input type="submit" value="Войти" onclick="/"/>

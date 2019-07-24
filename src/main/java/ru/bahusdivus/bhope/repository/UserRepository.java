@@ -6,4 +6,6 @@ import ru.bahusdivus.bhope.entities.User;
 public interface UserRepository extends JpaRepository<User, Long> {
 
     User findUserByLoginIgnoreCase(String login);
+
+    User findUserByEmailIgnoreCase(String email);
 }
