@@ -1,5 +1,6 @@
 package ru.bahusdivus.bhope.services;
 
+import org.springframework.data.domain.Page;
 import ru.bahusdivus.bhope.dto.PostDto;
 import ru.bahusdivus.bhope.dto.UserDto;
 import ru.bahusdivus.bhope.entities.Post;
@@ -14,9 +15,9 @@ public interface PostsService {
     void deletePost(long id);
     void incrementLikeCount(long id);
     PostDto getPost(long id);
-    List<PostDto> getPostsOrderByDate();
+    Page<PostDto> getPostsOrderByDate(int pageNumber);
     List<PostDto> getPostsOrderByLikeCount();
-    List<PostDto> getPostsByLike();
+    List<PostDto> getPostsByDateByLike();
     List<PostDto> getPostsByUserId(long userId);
     List<PostDto> getPostsByUserName(String userName);
 }

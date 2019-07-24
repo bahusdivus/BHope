@@ -26,6 +26,20 @@
                 </p>
             </div>
         </div>
+        <div class="pagination-div">
+            <span th:if="${posts.hasPrevious()}">
+                <a th:href="${'/posts/' + (posts.number-1)}">Previous</a>
+            </span>
+            <th:block th:each="i: ${#numbers.sequence(0, posts.totalPages - 1)}">
+                <span th:if="${posts.number == i}" class="selected">[[${i}+1]]</span>
+                <span th:unless="${posts.number == i}">
+                     <a th:href="${'/posts/' + i}">[[${i}+1]]</a>
+                </span>
+            </th:block>
+            <span th:if="${posts.hasNext()}">
+                <a th:href="${'/posts/' + (posts.number+1)}">Next</a>
+            </span>
+        </div>
     </div>
 </div>
 </div>

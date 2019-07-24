@@ -2,7 +2,7 @@
 <div th:replace="fragments/navbar"></div>
     <div class="row">
         <div class="col-sm-12">
-            <h2>User</h2>
+            <h2 th:text="${userDto.name}"></h2>
                 <div th:each="post : ${posts}">
                     <div class="border rounded p-2">
                         <p th:text="${post.title}"></p>
@@ -14,3 +14,6 @@
         </div>
     </div>
 <div th:replace="fragments/footer"></div>
+
+<p th:if="${post.content.length() > 150}"  th:text="${#strings.substring(post.content,0,150)}"></p>
+<p th:unless="${post.content.length() > 150}"  th:text="${post.content}"></p>

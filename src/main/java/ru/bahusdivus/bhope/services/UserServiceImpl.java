@@ -2,11 +2,15 @@ package ru.bahusdivus.bhope.services;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import ru.bahusdivus.bhope.dto.PostDto;
+import ru.bahusdivus.bhope.dto.UserDto;
+import ru.bahusdivus.bhope.entities.Post;
 import ru.bahusdivus.bhope.entities.User;
 import ru.bahusdivus.bhope.repository.UserRepository;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -36,5 +40,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findByLogin(String login) {
         return userRepository.findByLogin(login);
+    }
+
+    @Override
+    public UserDto findById(long id) {
+        Optional<User> userOptional = userRepository.findById(id);
+        return userOptional.map(UserDto::new).orElse(null);
     }
 }

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.ui.Model;
@@ -34,7 +35,7 @@ public class PostsController {
     @RequestMapping("/")
     public String getIndex(@AuthenticationPrincipal UserDetails userDetails, Model model) {
         model.addAttribute("login", userDetails != null ? userDetails.getUsername() : null);
-        List<PostDto> posts = postsService.getPostsByLike();
+        List<PostDto> posts = postsService.getPostsByDateByLike();
         UserDto userDto = new UserDto();
         PostDto postDto = new PostDto();
         model.addAttribute("postDto", postDto);
@@ -43,10 +44,12 @@ public class PostsController {
         return "index";
     }
 
-    @RequestMapping("/posts")
-    public String getPosts(@AuthenticationPrincipal UserDetails userDetails, Model model) {
+    @RequestMapping("/posts/{pageNumber}")
+    public String getPosts(@PathVariable("pageNumber") int pageNumber,
+                           @AuthenticationPrincipal UserDetails userDetails,
+                           Model model) {
         model.addAttribute("login", userDetails != null ? userDetails.getUsername() : null);
-        List<PostDto> posts = postsService.getPostsOrderByDate();
+        Page<PostDto> posts = postsService.getPostsOrderByDate(pageNumber);
         UserDto userDto = new UserDto();
         PostDto postDto = new PostDto();
         model.addAttribute("postDto", postDto);
@@ -72,7 +75,9 @@ public class PostsController {
                                 @AuthenticationPrincipal UserDetails userDetails,
                                 Model model) {
         model.addAttribute("login", userDetails != null ? userDetails.getUsername() : null);
+        UserDto userDto = userService.findById(userId);
         List<PostDto> posts = postsService.getPostsByUserId(userId);
+        model.addAttribute("userDto", userDto);
         model.addAttribute("posts", posts);
         return "postByUser";
     }

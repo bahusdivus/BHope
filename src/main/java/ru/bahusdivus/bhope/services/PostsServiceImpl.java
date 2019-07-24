@@ -1,6 +1,8 @@
 package ru.bahusdivus.bhope.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.bahusdivus.bhope.dto.PostDto;
 import ru.bahusdivus.bhope.entities.Post;
@@ -54,11 +56,10 @@ public class PostsServiceImpl implements PostsService {
     }
 
     @Override
-    public List<PostDto> getPostsOrderByDate() {
-        List<Post> posts = postRepository.findByDeletedFalseOrderByDateDesc();
-        return posts.stream()
-                .map(PostDto::new)
-                .collect(Collectors.toList());
+    public Page<PostDto> getPostsOrderByDate(int pageNumber) {
+        Page<Post> posts = postRepository.findByDeletedFalseOrderByDateDesc(PageRequest.of(pageNumber, 5));
+        Page<PostDto> postDto = posts.map(PostDto::new);
+        return postDto;
     }
 
     @Override
@@ -70,7 +71,7 @@ public class PostsServiceImpl implements PostsService {
     }
 
     @Override
-    public List<PostDto> getPostsByLike() {
+    public List<PostDto> getPostsByDateByLike() {
         List<Post> posts = postRepository.findByDeletedFalse();
         return posts.stream()
                 .map(PostDto::new)

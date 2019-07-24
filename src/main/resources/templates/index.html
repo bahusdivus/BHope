@@ -7,8 +7,8 @@
             <input type="submit" value="Поиск по автору" />
         </form>
         <a th:href="${'/post'}">Добавить пост</a>
+        <div>Самое интересное за последнюю неделю</div>
         <div th:each="post : ${posts}">
-            <div>Самое интересное за последнюю неделю</div>
             <div class="border rounded p-2">
                 <form th:action="@{/incrementLikeCount}" method="post" th:object="${postDto}">
                     <p th:text="${post.title}" class="bg-secondary"></p>
@@ -25,7 +25,7 @@
                 </p>
             </div>
         </div>
-        <a href="/posts">Все посты</a>
+        <a href="/posts/0">Все посты</a>
     </div>
 </div>
 </div>
