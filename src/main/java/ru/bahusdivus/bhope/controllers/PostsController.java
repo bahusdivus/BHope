@@ -1,11 +1,10 @@
 package ru.bahusdivus.bhope.controllers;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.ui.Model;
 import ru.bahusdivus.bhope.dto.PostDto;
@@ -139,10 +138,10 @@ public class PostsController {
         return "redirect:/find/" + userDto.getName();
     }
 
-    @RequestMapping(value = "incrementLikeCount", method = RequestMethod.POST)
-    public String incrementLikeCount(@ModelAttribute PostDto postDto) {
-        postsService.incrementLikeCount(postDto.getId());
-        return "redirect:/";
+    @RequestMapping(value = "/incrementLikeCount", method = RequestMethod.POST)
+    @ResponseBody
+    public String incrementLikeCount(@RequestBody Long postId) {
+        return String.valueOf(postsService.incrementLikeCount(postId));
     }
 
     @RequestMapping("/post/{postId}/comment")

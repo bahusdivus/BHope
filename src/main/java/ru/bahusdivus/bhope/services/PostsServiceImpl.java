@@ -38,13 +38,16 @@ public class PostsServiceImpl implements PostsService {
     }
 
     @Override
-    public void incrementLikeCount(long id) {
+    public int incrementLikeCount(long id) {
         Optional<Post> postOptional = postRepository.findById(id);
         if (postOptional.isPresent()) {
             Post post = postOptional.get();
-            post.setLikeCount(post.getLikeCount() + 1);
+            int likeCount = post.getLikeCount();
+            post.setLikeCount(likeCount + 1);
             postRepository.save(post);
+            return likeCount;
         }
+        return 0;
     }
 
     @Override
