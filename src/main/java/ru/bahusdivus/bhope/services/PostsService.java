@@ -14,8 +14,9 @@ public interface PostsService {
     void deletePost(long id);
     void incrementLikeCount(long id);
     PostDto getPost(long id);
-    List<PostDto> getPosts();
-    List<PostDto> getPostByLike();
+    List<PostDto> getPostsOrderByDate();
+    List<PostDto> getPostsOrderByLikeCount();
+    List<PostDto> getPostsByLike();
     List<PostDto> getPostsByUserId(long userId);
     List<PostDto> getPostsByUserName(String userName);
 }

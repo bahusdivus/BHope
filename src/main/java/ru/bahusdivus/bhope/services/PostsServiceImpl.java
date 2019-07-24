@@ -14,8 +14,11 @@ import java.util.stream.Collectors;
 @Service
 public class PostsServiceImpl implements PostsService {
 
-    @Autowired
-    private PostRepository postRepository;
+    private final PostRepository postRepository;
+
+    public PostsServiceImpl(PostRepository postRepository) {
+        this.postRepository = postRepository;
+    }
 
     @Override
     public void savePost(PostDto postDto) {
@@ -54,27 +57,34 @@ public class PostsServiceImpl implements PostsService {
     }
 
     @Override
-    public List<PostDto> getPosts() {
-        List<Post> posts = postRepository.findAll();
+    public List<PostDto> getPostsOrderByDate() {
+        List<Post> posts = postRepository.findByDeletedFalseOrderByDateDesc();
         return posts.stream()
                 .map(PostDto::new)
-                .sorted(Comparator.comparing(PostDto::getDate).reversed())
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<PostDto> getPostByLike() {
-        List<Post> posts = postRepository.findAll();
+    public List<PostDto> getPostsOrderByLikeCount() {
+        List<Post> posts = postRepository.findByDeletedFalseOrderByLikeCountDesc();
         return posts.stream()
                 .map(PostDto::new)
-                .sorted(Comparator.comparing(PostDto::getLikeCount).thenComparing(PostDto::getDate).reversed())
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<PostDto> getPostsByLike() {
+        List<Post> posts = postRepository.findByDeletedFalse();
+        return posts.stream()
+                .map(PostDto::new)
+                .sorted(Comparator.comparing(PostDto::getDate).thenComparing(PostDto::getLikeCount).reversed())
                 .limit(10)
                 .collect(Collectors.toList());
     }
 
     @Override
     public List<PostDto> getPostsByUserId(long userId) {
-        List<Post> posts = postRepository.findByUserId(userId);
+        List<Post> posts = postRepository.findByUserIdAndDeletedFalse(userId);
         return posts.stream()
                 .map(PostDto::new)
                 .sorted(Comparator.comparing(PostDto::getDate).reversed())
@@ -83,7 +93,7 @@ public class PostsServiceImpl implements PostsService {
 
     @Override
      public List<PostDto> getPostsByUserName(String userName) {
-        List<Post> posts = postRepository.findByUserName(userName);
+        List<Post> posts = postRepository.findByUserName(userName.toLowerCase());
         return posts.stream()
                 .map(PostDto::new)
                 .sorted(Comparator.comparing(PostDto::getDate).reversed())

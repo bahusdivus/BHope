@@ -31,13 +31,37 @@ public class PostsController {
     @RequestMapping("/")
     public String getIndex(@AuthenticationPrincipal UserDetailsUserImpl userDetails, Model model) {
         model.addAttribute("userDetails", userDetails);
-        List<PostDto> posts = postsService.getPostByLike();
+        List<PostDto> posts = postsService.getPostsByLike();
         UserDto userDto = new UserDto();
         PostDto postDto = new PostDto();
         model.addAttribute("postDto", postDto);
         model.addAttribute("user", userDto);
         model.addAttribute("posts", posts);
         return "index";
+    }
+
+    @RequestMapping("/posts")
+    public String getPosts(@AuthenticationPrincipal UserDetailsUserImpl userDetails, Model model) {
+        model.addAttribute("login", userDetails);
+        List<PostDto> posts = postsService.getPostsOrderByDate();
+        UserDto userDto = new UserDto();
+        PostDto postDto = new PostDto();
+        model.addAttribute("postDto", postDto);
+        model.addAttribute("user", userDto);
+        model.addAttribute("posts", posts);
+        return "posts";
+    }
+
+    @RequestMapping("/posts/byLike")
+    public String getPostsByLike(@AuthenticationPrincipal UserDetailsUserImpl userDetails, Model model) {
+        model.addAttribute("login", userDetails);
+        List<PostDto> posts = postsService.getPostsOrderByLikeCount();
+        UserDto userDto = new UserDto();
+        PostDto postDto = new PostDto();
+        model.addAttribute("postDto", postDto);
+        model.addAttribute("user", userDto);
+        model.addAttribute("posts", posts);
+        return "posts";
     }
 
     @RequestMapping("/users/{userId}/posts")

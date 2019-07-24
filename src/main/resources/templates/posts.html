@@ -2,7 +2,13 @@
 <div th:replace="fragments/navbar"></div>
 <div class="row">
     <div class="col-sm-12">
-        <h2 th:text=" 'Результат поиска ' + ${name}"></h2>
+        <form th:object="${user}" th:action="@{/findByUserName}" method="post">
+            <input type="text" th:field="*{name}" />
+            <input type="submit" value="Поиск по автору" />
+        </form>
+        <a th:href="${'/post'}">Добавить пост</a>
+        <a th:href="${'/posts'}">По дате</a>
+        <a th:href="${'/posts/byLike'}">По лайкам</a>
         <div th:each="post : ${posts}">
             <div class="border rounded p-2">
                 <form th:action="@{/incrementLikeCount}" method="post" th:object="${postDto}">
