@@ -20,7 +20,8 @@
                     </div>
                     <p th:if="${post.content.length() > 150}"  th:text="${#strings.substring(post.content,0,150)}"></p>
                     <p th:unless="${post.content.length() > 150}"  th:text="${post.content}"></p>
-                    <p th:text="${post.user.name + ' ' + post.date + '   Комментарии ' + post.countComments}"></p>
+                    <p><a th:href="${'/users/' + post.user.id + '/posts/0'}" th:text="${post.user.name}"></a></p>
+                    <p th:text="${post.date + '   Комментарии ' + post.countComments}"></p>
                     <input type="hidden" name="id" th:value="${post.id}"  />
                     <input type="submit" th:value="${post.likeCount}" />
                 </form>
@@ -29,7 +30,7 @@
                 </p>
             </div>
         </div>
-        <a href="/posts/0">Все посты</a>
+        <a href="/posts/byDate/0">Все посты</a>
     </div>
 </div>
 </div>

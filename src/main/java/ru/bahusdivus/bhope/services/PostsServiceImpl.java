@@ -1,8 +1,8 @@
 package ru.bahusdivus.bhope.services;
 
+import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.stereotype.Service;
 import ru.bahusdivus.bhope.dto.PostDto;
 import ru.bahusdivus.bhope.entities.Post;
 import ru.bahusdivus.bhope.repository.PostRepository;
@@ -66,11 +66,10 @@ public class PostsServiceImpl implements PostsService {
     }
 
     @Override
-    public List<PostDto> getPostsOrderByLikeCount() {
-        List<Post> posts = postRepository.findByDeletedFalseOrderByLikeCountDesc();
-        return posts.stream()
-                .map(PostDto::new)
-                .collect(Collectors.toList());
+    public Page<PostDto> getPostsOrderByLikeCount(int pageNumber) {
+        Page<Post> posts = postRepository.findByDeletedFalseOrderByLikeCountDesc(PageRequest.of(pageNumber, 5));
+        Page<PostDto> postDto = posts.map(PostDto::new);
+        return postDto;
     }
 
     @Override
@@ -85,20 +84,18 @@ public class PostsServiceImpl implements PostsService {
     }
 
     @Override
-    public List<PostDto> getPostsByUserId(long userId) {
-        List<Post> posts = postRepository.findByUserIdAndDeletedFalse(userId);
-        return posts.stream()
-                .map(PostDto::new)
-                .sorted(Comparator.comparing(PostDto::getDate).reversed())
-                .collect(Collectors.toList());
+    public Page<PostDto> getPostsByUserId(long userId, int pageNumber) {
+        Page<Post> posts = postRepository.findByUserIdAndDeletedFalseOrderByDateDesc(userId,
+                PageRequest.of(pageNumber, 5));
+        Page<PostDto> postDto = posts.map(PostDto::new);
+        return postDto;
     }
 
     @Override
-    public List<PostDto> getPostsByUserName(String userName) {
-        List<Post> posts = postRepository.findByUserName(userName.toLowerCase());
-        return posts.stream()
-                .map(PostDto::new)
-                .sorted(Comparator.comparing(PostDto::getDate).reversed())
-                .collect(Collectors.toList());
+    public Page<PostDto> getPostsByUserName(String userName, int pageNumber) {
+        Page<Post> posts = postRepository.findByUserNameIgnoreCaseLikeAndDeletedFalseOrderByDateDesc
+                ("%" + userName.toLowerCase() + "%", PageRequest.of(pageNumber, 5));
+        Page<PostDto> postDto = posts.map(PostDto::new);
+        return postDto;
     }
 }

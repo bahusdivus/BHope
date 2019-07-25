@@ -9,7 +9,7 @@
                     </form>
                 </td>
                 <td>
-                    <a th:href="'/users/' + ${userDetails.id} + '/posts'"><span th:text="${userDetails.username}"/></a>
+                    <a th:href="'/users/' + ${userDetails.id} + '/posts/0'"><span th:text="${userDetails.username}"/></a>
                 </td>
                 <td style="text-align:right">
                     <form th:action="@{/logout}" method="post">

@@ -16,8 +16,8 @@ public interface PostsService {
     void incrementLikeCount(long id);
     PostDto getPost(long id);
     Page<PostDto> getPostsOrderByDate(int pageNumber);
-    List<PostDto> getPostsOrderByLikeCount();
+    Page<PostDto> getPostsOrderByLikeCount(int pageNumber);
     List<PostDto> getPostsByDateByLike();
-    List<PostDto> getPostsByUserId(long userId);
-    List<PostDto> getPostsByUserName(String userName);
+    Page<PostDto> getPostsByUserId(long userId, int pageNumber);
+    Page<PostDto> getPostsByUserName(String userName, int pageNumber);
 }

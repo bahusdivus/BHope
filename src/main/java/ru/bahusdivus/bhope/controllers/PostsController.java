@@ -2,11 +2,8 @@ package ru.bahusdivus.bhope.controllers;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.ui.Model;
 import ru.bahusdivus.bhope.dto.PostDto;
@@ -18,6 +15,7 @@ import ru.bahusdivus.bhope.services.PostsService;
 import ru.bahusdivus.bhope.services.UserService;
 import ru.bahusdivus.bhope.utils.UserDetailsUserImpl;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 @Controller
@@ -36,6 +34,7 @@ public class PostsController {
     @RequestMapping("/")
     public String getIndex(@AuthenticationPrincipal UserDetails userDetails, Model model) {
         model.addAttribute("login", userDetails != null ? userDetails.getUsername() : null);
+        model.addAttribute("userDetails", userDetails);
         List<PostDto> posts = postsService.getPostsByDateByLike();
         UserDto userDto = new UserDto();
         PostDto postDto = new PostDto();
@@ -50,9 +49,12 @@ public class PostsController {
                            @AuthenticationPrincipal UserDetails userDetails,
                            Model model) {
         model.addAttribute("login", userDetails != null ? userDetails.getUsername() : null);
+        model.addAttribute("userDetails", userDetails);
         Page<PostDto> posts = postsService.getPostsOrderByDate(pageNumber);
         UserDto userDto = new UserDto();
         PostDto postDto = new PostDto();
+        String byType = "byDate";
+        model.addAttribute("byType", byType);
         model.addAttribute("postDto", postDto);
         model.addAttribute("user", userDto);
         model.addAttribute("posts", posts);
@@ -64,34 +66,47 @@ public class PostsController {
                                  @AuthenticationPrincipal UserDetails userDetails,
                                  Model model) {
         model.addAttribute("login", userDetails != null ? userDetails.getUsername() : null);
-        List<PostDto> posts = postsService.getPostsOrderByLikeCount();
+        model.addAttribute("userDetails", userDetails);
+        Page<PostDto> posts = postsService.getPostsOrderByLikeCount(pageNumber);
         UserDto userDto = new UserDto();
         PostDto postDto = new PostDto();
+        String byType = "byLike";
+        model.addAttribute("byType", byType);
         model.addAttribute("postDto", postDto);
         model.addAttribute("user", userDto);
         model.addAttribute("posts", posts);
         return "posts";
     }
 
-    @RequestMapping("/users/{userId}/posts")
+    @RequestMapping("/users/{userId}/posts/{pageNumber}")
     public String getPostByUser(@PathVariable("userId") long userId,
+                                @PathVariable("pageNumber") int pageNumber,
                                 @AuthenticationPrincipal UserDetails userDetails,
                                 Model model) {
         model.addAttribute("login", userDetails != null ? userDetails.getUsername() : null);
+        model.addAttribute("userDetails", userDetails);
         UserDto userDto = userService.findById(userId);
-        List<PostDto> posts = postsService.getPostsByUserId(userId);
-        model.addAttribute("userDto", userDto);
+        PostDto postDto = new PostDto();
+        Page<PostDto> posts = postsService.getPostsByUserId(userId, pageNumber);
+        model.addAttribute("postDto", postDto);
+        model.addAttribute("user", userDto);
         model.addAttribute("posts", posts);
         return "postByUser";
     }
 
-    @RequestMapping("/find/{name}")
+    @RequestMapping(value = "/find/{name}/{pageNumber}")
     public String getPostByUserName(@PathVariable("name") String name,
+                                    @PathVariable("pageNumber") int pageNumber,
                                     @AuthenticationPrincipal UserDetails userDetails,
-                                    Model model) {
+                                    Model model) throws UnsupportedEncodingException {
         model.addAttribute("login", userDetails != null ? userDetails.getUsername() : null);
-        List<PostDto> posts = postsService.getPostsByUserName(name);
-        model.addAttribute("name", name);
+        model.addAttribute("userDetails", userDetails);
+        Page<PostDto> posts = postsService.getPostsByUserName(name, pageNumber);
+        UserDto userDto = new UserDto();
+        PostDto postDto = new PostDto();
+        model.addAttribute("user", userDto);
+        model.addAttribute("postDto", postDto);
+        model.addAttribute("name",name);
         model.addAttribute("posts", posts);
         return "findByUserName";
     }
@@ -156,12 +171,12 @@ public class PostsController {
     @RequestMapping(value = "savePost", method = RequestMethod.POST)
     public String savePost(@ModelAttribute PostDto postDto) {
         postsService.savePost(postDto);
-        return "redirect:/" + postDto.getId();
+        return "redirect:/posts/" + postDto.getId();
     }
 
     @RequestMapping(value = "findByUserName", method = RequestMethod.POST)
     public String findByUserName(@ModelAttribute UserDto userDto) {
-        return "redirect:/find/" + userDto.getName();
+        return "redirect:/find/" + userDto.getName() + "/0";
     }
 
     @RequestMapping(value = "incrementLikeCount", method = RequestMethod.POST)
