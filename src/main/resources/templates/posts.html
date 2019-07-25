@@ -6,18 +6,23 @@
             <input type="text" th:field="*{name}" />
             <input type="submit" value="Поиск по автору" />
         </form>
-        <a th:href="${'/post'}">Добавить пост</a>
-        <a th:href="${'/posts'}">По дате</a>
-        <a th:href="${'/posts/byLike'}">По лайкам</a>
+        <a th:if="${userDetails} != null" th:href="${'/post'}">Добавить пост</a>
+        <a th:href="${'/posts/byDate/0'}">По дате</a>
+        <a th:href="${'/posts/byLike/0'}">По лайкам</a>
         <div th:each="post : ${posts}">
             <div class="border rounded p-2">
                 <form th:action="@{/incrementLikeCount}" method="post" th:object="${postDto}">
                     <p th:text="${post.title}" class="bg-secondary"></p>
-                    <a th:href="${'/post/' + post.id + '/edit/'}">Редактировать</a>
-                    <a th:href="${'/post/' + post.id + '/delete/'}">Удалить</a>
+                    <div th:if="${userDetails}">
+                        <a th:if="${userDetails.id == post.user.id}"
+                           th:href="${'/post/' + post.id + '/edit/'}">Редактировать</a>
+                        <a th:if="${userDetails.id == post.user.id or userDetails.admin}"
+                           th:href="${'/post/' + post.id + '/delete/'}">Удалить</a>
+                    </div>
                     <p th:if="${post.content.length() > 150}"  th:text="${#strings.substring(post.content,0,150)}"></p>
                     <p th:unless="${post.content.length() > 150}"  th:text="${post.content}"></p>
-                    <p th:text="${post.user.name + ' ' + post.date + '   Комментарии ' + post.countComments}"></p>
+                    <p><a th:href="${'/users/' + post.user.id + '/posts/0'}" th:text="${post.user.name}"></a></p>
+                    <p th:text="${post.date + '   Комментарии ' + post.countComments}"></p>
                     <input type="hidden" name="id" th:value="${post.id}"  />
                     <input type="submit" th:value="${post.likeCount}" />
                 </form>
@@ -25,6 +30,20 @@
                     <a th:href="${'/post/' + post.id}">Подробнее</a>
                 </p>
             </div>
+        </div>
+        <div th:if="${posts.getTotalPages() > 1}" class="pagination-div">
+            <span th:if="${posts.hasPrevious()}">
+                <a th:href="${'/posts/' + byType + '/' + (posts.number-1)}">Previous</a>
+            </span>
+            <th:block th:each="i: ${#numbers.sequence(0, posts.totalPages - 1)}">
+                <span th:if="${posts.number == i}" class="selected">[[${i}+1]]</span>
+                <span th:unless="${posts.number == i}">
+                     <a th:href="${'/posts/' + byType + '/' + i}">[[${i}+1]]</a>
+                </span>
+            </th:block>
+            <span th:if="${posts.hasNext()}">
+                <a th:href="${'/posts/' + byType + '/' + (posts.number+1)}">Next</a>
+            </span>
         </div>
     </div>
 </div>

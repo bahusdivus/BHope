@@ -3,7 +3,7 @@
 <div class="container bg-white pt-4 shadow">
     <div class="row">
         <div class="col-sm-2">
-            <a class="btn btn-secondary" th:href="${'/post'}">Добавить пост</a>
+            <a th:if="${userDetails}" class="btn btn-secondary" th:href="${'/post'}">Добавить пост</a>
         </div>
         <div class="col-sm-10">
             <form th:object="${user}" th:action="@{/findByUserName}" method="post">
@@ -27,13 +27,13 @@
                     <div class="card border-bottom-secondary shadow">
                         <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between bg-secondary text-light">
                             <h6 class="m-0" th:text="${post.title}"></h6>
-                            <div class="dropdown no-arrow">
+                            <div th:if="${userDetails.id == post.user.id or userDetails.admin}" class="dropdown no-arrow">
                                 <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(17px, 19px, 0px);">
-                                    <a class="dropdown-item" th:href="${'/post/' + post.id + '/edit/'}">Редактировать</a>
-                                    <a class="dropdown-item" th:href="${'/post/' + post.id + '/delete/'}">Удалить</a>
+                                    <a th:if="${userDetails.id == post.user.id}" class="dropdown-item" th:href="${'/post/' + post.id + '/edit/'}">Редактировать</a>
+                                    <a th:if="${userDetails.id == post.user.id or userDetails.admin}" class="dropdown-item" th:href="${'/post/' + post.id + '/delete/'}">Удалить</a>
                                 </div>
                             </div>
                         </div>

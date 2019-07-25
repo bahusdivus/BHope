@@ -12,9 +12,11 @@
     </button>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav ml-auto" th:if="${login} != null">
+        <ul class="navbar-nav ml-auto" th:if="${userDetails}">
             <li class="nav-item">
-                <a class="nav-link" th:href="'/users/' + ${login} + '/posts'"><span th:text="${login}"/></a>
+                <a class="nav-link" th:href="'/users/' + ${userDetails.id} + '/posts/0'">
+                    <span th:text="${userDetails.username}"/>
+                </a>
             </li>
             <li class="nav-item">
                 <form th:action="@{/logout}" method="post">
@@ -22,7 +24,7 @@
                 </form>
             </li>
         </ul>
-        <ul class="navbar-nav ml-auto" th:if="${login} == null">
+        <ul class="navbar-nav ml-auto" th:unless="${userDetails}">
             <li class="nav-item">
                 <a class="nav-link" th:href="@{/registration}">Регистрация</a>
             </li>
@@ -31,5 +33,5 @@
             </li>
         </ul>
     </div>
-
 </nav>
+<div th:if="${message}" th:text="${message}"/>

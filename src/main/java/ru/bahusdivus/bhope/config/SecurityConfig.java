@@ -15,7 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private static final String[] UNSECURED_RESOURCE_LIST = {"/**", "/js/**", "/css/**"};
+    private static final String[] UNSECURED_RESOURCE_LIST = {"/**"};
 
     @Bean
     SessionRegistry sessionRegistry() {
@@ -57,10 +57,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement()
                 .maximumSessions(1)
                 .maxSessionsPreventsLogin(false)
-                .expiredUrl("/login")
                 .sessionRegistry(sessionRegistry())
                 .and()
-                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
-                .invalidSessionUrl("/login");
+                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);
     }
 }
