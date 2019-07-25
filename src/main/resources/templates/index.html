@@ -2,10 +2,10 @@
 <div th:replace="fragments/navbar"></div>
 <div class="container bg-white pt-4 shadow">
     <div class="row">
-        <div class="col-sm-2">
-            <a th:if="${userDetails}" class="btn btn-secondary" th:href="${'/post'}">Добавить пост</a>
+        <div th:if="${userDetails != null}" class="col-2">
+            <a class="btn btn-secondary" th:href="${'/post'}">Добавить пост</a>
         </div>
-        <div class="col-sm-10">
+        <div class="col">
             <form th:object="${user}" th:action="@{/findByUserName}" method="post">
                 <div class="input-group mb-3">
                     <input type="text" th:field="*{name}"  class="form-control"
@@ -27,13 +27,13 @@
                     <div class="card border-bottom-secondary shadow">
                         <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between bg-secondary text-light">
                             <h6 class="m-0" th:text="${post.title}"></h6>
-                            <div th:if="${userDetails.id == post.user.id or userDetails.admin}" class="dropdown no-arrow">
+                            <div th:if="${userDetails != null and (userDetails.id == post.user.id or userDetails.admin)}" class="dropdown no-arrow">
                                 <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(17px, 19px, 0px);">
-                                    <a th:if="${userDetails.id == post.user.id}" class="dropdown-item" th:href="${'/post/' + post.id + '/edit/'}">Редактировать</a>
-                                    <a th:if="${userDetails.id == post.user.id or userDetails.admin}" class="dropdown-item" th:href="${'/post/' + post.id + '/delete/'}">Удалить</a>
+                                    <a class="dropdown-item" th:if="${userDetails.id == post.user.id}" th:href="${'/post/' + post.id + '/edit/'}">Редактировать</a>
+                                    <a class="dropdown-item" th:if="${userDetails.id == post.user.id or userDetails.admin}" th:href="${'/post/' + post.id + '/delete/'}">Удалить</a>
                                 </div>
                             </div>
                         </div>
@@ -48,18 +48,22 @@
                                 <i class="fas fa-comments text-gray-300"></i>
                                 <span th:text="${post.countComments}"></span>
                             </p>
-                            <form th:action="@{/incrementLikeCount}" method="post" th:object="${postDto}">
+                            <form th:if="${userDetails != null}" th:action="@{/incrementLikeCount}" method="post" th:object="${postDto}">
                                 <input type="hidden" name="id" th:value="${post.id}"  />
                                 <a class="like mb-0 mr-3" href="#">
                                     <i class="fas fa-heart text-gray-300"></i>
                                     <span th:text="${post.likeCount}"></span>
                                 </a>
                             </form>
+                            <p th:unless="${userDetails != null}" class="mb-0 mr-3" href="#">
+                                <i class="fas fa-heart text-gray-300"></i>
+                                <span th:text="${post.likeCount}"></span>
+                            </p>
                             <a th:href="${'/post/' + post.id}">Подробнее</a>
                         </div>
                     </div>
                 </div>
-                <a class="btn btn-secondary" href="/posts">Все посты</a>
+                <a class="btn btn-secondary" href="/posts/byDate/0">Все посты</a>
             </div>
         </div>
     </div>

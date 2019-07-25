@@ -16,7 +16,6 @@ import ru.bahusdivus.bhope.utils.UserDetailsUserImpl;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 public class PostsController {

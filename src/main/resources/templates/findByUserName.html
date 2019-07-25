@@ -1,50 +1,85 @@
 <div th:replace="fragments/header" xmlns:th="http://www.w3.org/1999/xhtml"></div>
 <div th:replace="fragments/navbar"></div>
-<div class="row">
-    <div class="col-sm-12">
-        <form th:object="${user}" th:action="@{/findByUserName}" method="post">
-            <input type="text" th:field="*{name}" />
-            <input type="submit" value="Поиск по автору" />
-        </form>
-        <a th:if="${userDetails} != null" th:href="${'/post'}">Добавить пост</a>
-        <h2 th:text=" 'Результат поиска ' + ${name}"></h2>
-        <div th:each="post : ${posts}">
-            <div class="border rounded p-2">
-                <form th:action="@{/incrementLikeCount}" method="post" th:object="${postDto}">
-                    <p th:text="${post.title}" class="bg-secondary"></p>
-                    <div th:if="${userDetails}">
-                        <a th:if="${userDetails.id == post.user.id}"
-                           th:href="${'/post/' + post.id + '/edit/'}">Редактировать</a>
-                        <a th:if="${userDetails.id == post.user.id or userDetails.admin}"
-                           th:href="${'/post/' + post.id + '/delete/'}">Удалить</a>
-                    </div>
-                    <p th:if="${post.content.length() > 150}"  th:text="${#strings.substring(post.content,0,150)}"></p>
-                    <p th:unless="${post.content.length() > 150}"  th:text="${post.content}"></p>
-                    <p><a th:href="${'/users/' + post.user.id + '/posts/0'}" th:text="${post.user.name}"></a></p>
-                    <p th:text="${ post.date + '   Комментарии ' + post.countComments}"></p>
-                    <input type="hidden" name="id" th:value="${post.id}"  />
-                    <input type="submit" th:value="${post.likeCount}" />
-                </form>
-                <p>
-                    <a th:href="${'/post/' + post.id}">Подробнее</a>
-                </p>
-            </div>
+<div class="container bg-white pt-4 shadow">
+    <div class="row">
+        <div th:if="${userDetails != null}" class="col-2">
+            <a class="btn btn-secondary" th:href="${'/post'}">Добавить пост</a>
         </div>
-        <div th:if="${posts.getTotalPages() > 1}" class="pagination-div">
-            <span th:if="${posts.hasPrevious()}">
-                <a th:href="${'/find/' + name + '/' + (posts.number-1)}">Previous</a>
-            </span>
-            <th:block th:each="i: ${#numbers.sequence(0, posts.totalPages - 1)}">
-                <span th:if="${posts.number == i}" class="selected">[[${i}+1]]</span>
-                <span th:unless="${posts.number == i}">
-                     <a th:href="${'/find/' + name + '/' + i}">[[${i}+1]]</a>
-                </span>
-            </th:block>
-            <span th:if="${posts.hasNext()}">
-                <a th:href="${'/find/' + name + '/' + (posts.number+1)}">Next</a>
-            </span>
+        <div class="col">
+            <form th:object="${user}" th:action="@{/findByUserName}" method="post">
+                <div class="input-group mb-3">
+                    <input type="text" th:field="*{name}" class="form-control"
+                           placeholder="Поиск по автору" aria-label="Поиск по автору" aria-describedby="basic-addon2"/>
+                    <div class="input-group-append">
+                        <input type="submit" class="btn btn-outline-secondary" value="Найти" />
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
-</div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h5 class="m-0 text-secondary text-uppercase" th:text="'Результат поиска по автору: ' + ${name}"></h5>
+                </div>
+                <div class="card-body" th:each="post : ${posts}">
+                    <div class="card border-bottom-secondary shadow">
+                        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between bg-secondary text-light">
+                            <h6 class="m-0" th:text="${post.title}"></h6>
+                            <div th:if="${userDetails != null and (userDetails.id == post.user.id or userDetails.admin)}" class="dropdown no-arrow">
+                                <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(17px, 19px, 0px);">
+                                    <a class="dropdown-item" th:if="${userDetails.id == post.user.id}" th:href="${'/post/' + post.id + '/edit/'}">Редактировать</a>
+                                    <a class="dropdown-item" th:if="${userDetails.id == post.user.id or userDetails.admin}" th:href="${'/post/' + post.id + '/delete/'}">Удалить</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <p th:if="${post.content.length() > 300}"  th:text="${#strings.substring(post.content,0,300)}"></p>
+                            <p th:unless="${post.content.length() > 300}"  th:text="${post.content}"></p>
+                        </div>
+                        <div class="card-header d-flex flex-row align-items-center bg-light">
+                            <a class="mb-0 text-dark" th:href="${'/users/' + post.user.id + '/posts'}" th:text="${post.user.name}"></a>
+                            <p class="mb-0 ml-3 text-muted font-italic" th:text="${#temporals.format(post.date, 'dd.MM.yyyy HH:mm')}"></p>
+                            <p class="mb-0 ml-auto mr-3">
+                                <i class="fas fa-comments text-gray-300"></i>
+                                <span th:text="${post.countComments}"></span>
+                            </p>
+                            <form th:if="${userDetails != null}" th:action="@{/incrementLikeCount}" method="post" th:object="${postDto}">
+                                <input type="hidden" name="id" th:value="${post.id}"  />
+                                <a class="like mb-0 mr-3" href="#">
+                                    <i class="fas fa-heart text-gray-300"></i>
+                                    <span th:text="${post.likeCount}"></span>
+                                </a>
+                            </form>
+                            <p th:unless="${userDetails != null}" class="mb-0 mr-3" href="#">
+                                <i class="fas fa-heart text-gray-300"></i>
+                                <span th:text="${post.likeCount}"></span>
+                            </p>
+                            <a th:href="${'/post/' + post.id}">Подробнее</a>
+                        </div>
+                    </div>
+                </div>
+                <nav th:if="${posts.getTotalPages() > 1}" aria-label="...">
+                    <ul class="pagination justify-content-center text-secondary">
+                        <li class="page-item" th:classappend="${posts.hasPrevious()} ? '' : disabled">
+                            <a class="page-link" tabindex="-1" th:href="${'/find/' + name + '/' + (posts.number-1)}">Предыдущая</a>
+                        </li>
+                        <th:block th:each="i: ${#numbers.sequence(0, posts.totalPages - 1)}">
+                            <li class="page-item"th:classappend="${posts.number == i} ? active : ''">
+                                <a class="page-link"  th:href="${'/find/' + name + '/' + i}">[[${i}+1]]</a>
+                            </li>
+                        </th:block>
+                        <li class="page-item" th:classappend="${posts.hasNext()} ? '' : disabled">
+                            <a class="page-link" href="#">Следующая</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
 </div>
 <div th:replace="fragments/footer"></div>

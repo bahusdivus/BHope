@@ -34,4 +34,9 @@
         </ul>
     </div>
 </nav>
-<div th:if="${message}" th:text="${message}"/>
+<div th:if="${message} != null" class="container sticky-top alert alert-danger alert-dismissible fade show mb-0 " role="alert">
+    <p th:text="${message}"></p>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>

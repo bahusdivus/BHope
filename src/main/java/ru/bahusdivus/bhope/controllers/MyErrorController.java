@@ -24,7 +24,7 @@ public class MyErrorController implements ErrorController {
             if (statusCode == HttpStatus.NOT_FOUND.value()) {
                 message = "Страница не найдена";
             } else if (statusCode == HttpStatus.INTERNAL_SERVER_ERROR.value()) {
-                message = "Внутренняя ощибка сервера";
+                message = "Внутренняя ошибка сервера";
             } else if (statusCode == HttpStatus.UNAUTHORIZED.value()) {
                 message = "Нужно авторизоваться";
             } else if (statusCode == HttpStatus.FORBIDDEN.value()) {
