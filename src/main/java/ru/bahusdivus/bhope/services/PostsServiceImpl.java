@@ -1,6 +1,5 @@
 package ru.bahusdivus.bhope.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -8,6 +7,7 @@ import ru.bahusdivus.bhope.dto.PostDto;
 import ru.bahusdivus.bhope.entities.Post;
 import ru.bahusdivus.bhope.repository.PostRepository;
 
+import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -16,8 +16,11 @@ import java.util.stream.Collectors;
 @Service
 public class PostsServiceImpl implements PostsService {
 
-    @Autowired
-    private PostRepository postRepository;
+    private final PostRepository postRepository;
+
+    public PostsServiceImpl(PostRepository postRepository) {
+        this.postRepository = postRepository;
+    }
 
     @Override
     public void savePost(PostDto postDto) {
@@ -55,7 +58,7 @@ public class PostsServiceImpl implements PostsService {
         return postOptional.map(PostDto::new).orElse(null);
     }
 
-    @Override
+
     public Page<PostDto> getPostsOrderByDate(int pageNumber) {
         Page<Post> posts = postRepository.findByDeletedFalseOrderByDateDesc(PageRequest.of(pageNumber, 5));
         Page<PostDto> postDto = posts.map(PostDto::new);
@@ -75,7 +78,8 @@ public class PostsServiceImpl implements PostsService {
         List<Post> posts = postRepository.findByDeletedFalse();
         return posts.stream()
                 .map(PostDto::new)
-                .sorted(Comparator.comparing(PostDto::getDate).thenComparing(PostDto::getLikeCount).reversed())
+                .sorted(Comparator.comparing(PostDto::getLikeCount).reversed())
+                .filter(x -> x.getDate().isAfter(LocalDateTime.now().minusDays(7)))
                 .limit(10)
                 .collect(Collectors.toList());
     }
@@ -90,7 +94,7 @@ public class PostsServiceImpl implements PostsService {
     }
 
     @Override
-     public List<PostDto> getPostsByUserName(String userName) {
+    public List<PostDto> getPostsByUserName(String userName) {
         List<Post> posts = postRepository.findByUserName(userName.toLowerCase());
         return posts.stream()
                 .map(PostDto::new)

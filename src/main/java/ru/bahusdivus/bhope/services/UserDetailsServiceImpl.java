@@ -1,18 +1,14 @@
 package ru.bahusdivus.bhope.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import ru.bahusdivus.bhope.entities.User;
 import ru.bahusdivus.bhope.repository.UserRepository;
+import ru.bahusdivus.bhope.utils.UserDetailsUserImpl;
 
 import javax.transaction.Transactional;
-import java.util.HashSet;
-import java.util.Set;
 
 @Component
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -26,17 +22,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	@Override
 	@Transactional
 	public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
-		User user = userRepository.findByLogin(login);
-		Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-
-		if (user.isAdmin()) {
-			grantedAuthorities.add(new SimpleGrantedAuthority("ADMIN"));
-		} else {
-			grantedAuthorities.add(new SimpleGrantedAuthority("USER"));
+		User user = userRepository.findUserByLoginIgnoreCase(login);
+		if (user == null) {
+			throw new UsernameNotFoundException("user " + login + "not found");
 		}
 
-		return new org.springframework.security.core.userdetails.User(user.getLogin(),
-																	  user.getPassword(),
-																	  grantedAuthorities);
+		return new UserDetailsUserImpl(user.getLogin(), user.getPassword(), user.getId(), user.isAdmin());
 	}
 }

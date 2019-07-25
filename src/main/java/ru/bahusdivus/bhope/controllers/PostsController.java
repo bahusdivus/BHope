@@ -16,6 +16,7 @@ import ru.bahusdivus.bhope.dto.UserDto;
 import ru.bahusdivus.bhope.services.CommentsService;
 import ru.bahusdivus.bhope.services.PostsService;
 import ru.bahusdivus.bhope.services.UserService;
+import ru.bahusdivus.bhope.utils.UserDetailsUserImpl;
 
 import java.util.List;
 
@@ -44,7 +45,7 @@ public class PostsController {
         return "index";
     }
 
-    @RequestMapping("/posts/{pageNumber}")
+    @RequestMapping("/posts/byDate/{pageNumber}")
     public String getPosts(@PathVariable("pageNumber") int pageNumber,
                            @AuthenticationPrincipal UserDetails userDetails,
                            Model model) {
@@ -58,8 +59,10 @@ public class PostsController {
         return "posts";
     }
 
-    @RequestMapping("/posts/byLike")
-    public String getPostsByLike(@AuthenticationPrincipal UserDetails userDetails, Model model) {
+    @RequestMapping("/posts/byLike/{pageNumber}")
+    public String getPostsByLike(@PathVariable("pageNumber") int pageNumber,
+                                 @AuthenticationPrincipal UserDetails userDetails,
+                                 Model model) {
         model.addAttribute("login", userDetails != null ? userDetails.getUsername() : null);
         List<PostDto> posts = postsService.getPostsOrderByLikeCount();
         UserDto userDto = new UserDto();
@@ -94,40 +97,57 @@ public class PostsController {
     }
 
     @RequestMapping("/post")
-    public String getNewPostForm(@AuthenticationPrincipal UserDetails userDetails,
-                                 Model model) throws IllegalAccessException {
+    public String getNewPostForm(@AuthenticationPrincipal UserDetailsUserImpl userDetails,
+                                 Model model) {
 
         if (userDetails == null) {
-            throw new IllegalAccessException("нужно зарегистрироваться");
+            model.addAttribute("errorMessage", "Нужно авторизоваться");
+            model.addAttribute("statusCode", "401");
+            return "error";
         }
-        model.addAttribute("login", userDetails.getUsername());
+        model.addAttribute("userDetails", userDetails);
 
         PostDto postDto = new PostDto();
-        postDto.setUser(new UserDto(1));
+        postDto.setUser(new UserDto(userDetails.getId()));
         model.addAttribute("post", postDto);
         return "editPost";
     }
 
     @RequestMapping("/post/{postId}/edit")
     public String getEditPostForm(@PathVariable("postId") long postId,
-                                  @AuthenticationPrincipal UserDetails userDetails,
-                                  Model model) throws IllegalAccessException {
+                                  @AuthenticationPrincipal UserDetailsUserImpl userDetails,
+                                  Model model) {
 
         if (userDetails == null) {
-            throw new IllegalAccessException("нужно зарегистрироваться");
+            model.addAttribute("errorMessage", "Нужно авторизоваться");
+            model.addAttribute("statusCode", "401");
+            return "error";
         }
-        model.addAttribute("login", userDetails.getUsername());
+        model.addAttribute("userDetails", userDetails);
 
         PostDto postDto = postsService.getPost(postId);
+        if (userDetails.getId() != postDto.getUser().getId()) {
+            model.addAttribute("errorMessage", "Нет доступа");
+            model.addAttribute("statusCode", "403");
+            return "error";
+        }
         model.addAttribute("post", postDto);
         return "editPost";
     }
 
     @RequestMapping("/post/{postId}/delete")
     public String deletePost(@PathVariable("postId") long postId,
-                             @AuthenticationPrincipal UserDetails userDetails) throws IllegalAccessException {
+                             @AuthenticationPrincipal UserDetailsUserImpl userDetails, Model model) {
         if (userDetails == null) {
-            throw new IllegalAccessException("нужно зарегистрироваться");
+            model.addAttribute("errorMessage", "Нужно авторизоваться");
+            model.addAttribute("statusCode", "401");
+            return "error";
+        }
+        if (userDetails.getId() != postsService.getPost(postId).getUser().getId()
+                && !userDetails.getAdmin()) {
+            model.addAttribute("errorMessage", "Нет доступа");
+            model.addAttribute("statusCode", "403");
+            return "error";
         }
         postsService.deletePost(postId);
         return "redirect:/";
@@ -136,7 +156,7 @@ public class PostsController {
     @RequestMapping(value = "savePost", method = RequestMethod.POST)
     public String savePost(@ModelAttribute PostDto postDto) {
         postsService.savePost(postDto);
-        return "redirect:/";
+        return "redirect:/" + postDto.getId();
     }
 
     @RequestMapping(value = "findByUserName", method = RequestMethod.POST)
@@ -150,35 +170,41 @@ public class PostsController {
         return "redirect:/";
     }
 
-    @RequestMapping("/post/{postId}/comment")
-    public String getNewCommentForm(@PathVariable("postId") long postId,
-                                    @AuthenticationPrincipal UserDetails userDetails,
-                                    Model model) throws IllegalAccessException {
-        return getNewCommentFormWithParent(postId, 0, userDetails, model);
-    }
-
     @RequestMapping("/post/{postId}")
     public String getPage(@PathVariable("postId") long postId,
-                          @AuthenticationPrincipal UserDetails userDetails,
+                          @AuthenticationPrincipal UserDetailsUserImpl userDetails,
                           Model model) {
-        model.addAttribute("login", userDetails != null ? userDetails.getUsername() : null);
+        model.addAttribute("userDetails", userDetails);
 
-        model.addAttribute("login", userDetails != null ? userDetails.getUsername() : null);
         PostWithCommentsDto post = commentsService.getPostWithComments(postId);
         model.addAttribute("post", post.getPost());
         model.addAttribute("comments", post.getComments());
         return "postPage";
     }
 
+    @RequestMapping("/post/{postId}/comment")
+    public String getNewCommentForm(@PathVariable("postId") long postId,
+                                    @AuthenticationPrincipal UserDetailsUserImpl userDetails,
+                                    Model model) {
+        return getNewCommentFormWithParent(postId, 0, userDetails, model);
+    }
+
     @RequestMapping("/post/{postId}/comment/{id}")
     public String getEditCommentForm(@PathVariable("postId") long postId,
                                      @PathVariable("id") long id,
-                                     @AuthenticationPrincipal UserDetails userDetails,
-                                     Model model) throws IllegalAccessException {
+                                     @AuthenticationPrincipal UserDetailsUserImpl userDetails,
+                                     Model model) {
         if (userDetails == null) {
-            throw new IllegalAccessException("нужно зарегистрироваться");
+            model.addAttribute("errorMessage", "Нужно авторизоваться");
+            model.addAttribute("statusCode", "401");
+            return "error";
         }
         CommentDto comment = commentsService.getComment(id);
+        if (userDetails.getId() != comment.getUser().getId()) {
+            model.addAttribute("errorMessage", "Нет доступа");
+            model.addAttribute("statusCode", "403");
+            return "error";
+        }
         model.addAttribute("comment", comment);
         return "commentPage";
     }
@@ -186,18 +212,20 @@ public class PostsController {
     @RequestMapping("/post/{postId}/comment/{id}/comment")
     public String getNewCommentFormWithParent(@PathVariable("postId") long postId,
                                               @PathVariable("id") long id,
-                                              @AuthenticationPrincipal UserDetails userDetails,
-                                              Model model) throws IllegalAccessException {
+                                              @AuthenticationPrincipal UserDetailsUserImpl userDetails,
+                                              Model model) {
 
         if (userDetails == null) {
-            throw new IllegalAccessException("нужно зарегистрироваться");
+            model.addAttribute("errorMessage", "Нужно авторизоваться");
+            model.addAttribute("statusCode", "401");
+            return "error";
         }
-        model.addAttribute("login", userDetails.getUsername());
+        model.addAttribute("userDetails", userDetails);
 
         CommentDto commentDto = new CommentDto();
         commentDto.setPost(postId);
         commentDto.setParent(id);
-        long userId = userService.findByLogin(userDetails.getUsername()).getId();
+        long userId = userDetails.getId();
         commentDto.setUser(new UserDto(userId));
         model.addAttribute("comment", commentDto);
         return "commentPage";
@@ -206,9 +234,17 @@ public class PostsController {
     @RequestMapping("/post/{postId}/comment/{id}/delete")
     public String deleteComment(@PathVariable("postId") long postId,
                                 @PathVariable("id") long id,
-                                @AuthenticationPrincipal UserDetails userDetails) throws IllegalAccessException {
+                                @AuthenticationPrincipal UserDetailsUserImpl userDetails, Model model) {
         if (userDetails == null) {
-            throw new IllegalAccessException("нужно зарегистрироваться");
+            model.addAttribute("errorMessage", "Нужно авторизоваться");
+            model.addAttribute("statusCode", "401");
+            return "error";
+        }
+        if (userDetails.getId() != commentsService.getComment(id).getUser().getId()
+                && !userDetails.getAdmin()) {
+            model.addAttribute("errorMessage", "Нет доступа");
+            model.addAttribute("statusCode", "403");
+            return "error";
         }
         commentsService.deleteComment(id);
         return "redirect:/post/" + postId;
@@ -220,3 +256,4 @@ public class PostsController {
         return "redirect:/post/" + comment.getPost();
     }
 }
+
