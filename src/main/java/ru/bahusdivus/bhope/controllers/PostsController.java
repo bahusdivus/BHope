@@ -98,7 +98,7 @@ public class PostsController {
     public String getPostByUserName(@PathVariable("name") String name,
                                     @PathVariable("pageNumber") int pageNumber,
                                     @AuthenticationPrincipal UserDetails userDetails,
-                                    Model model) throws UnsupportedEncodingException {
+                                    Model model) {
         model.addAttribute("login", userDetails != null ? userDetails.getUsername() : null);
         model.addAttribute("userDetails", userDetails);
         Page<PostDto> posts = postsService.getPostsByUserName(name, pageNumber);

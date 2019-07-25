@@ -11,11 +11,7 @@ import java.util.List;
 
 public interface PostRepository extends PagingAndSortingRepository<Post, Long> {
     Page<Post> findByUserIdAndDeletedFalseOrderByDateDesc(long userId, Pageable pageable);
-
-//    @Query("select p from Post p, User u where p.deleted = false and p.user = u " +
-//            "and lower(u.name) like %?1%")
     Page<Post> findByUserNameIgnoreCaseLikeAndDeletedFalseOrderByDateDesc(@Param("name") String name, Pageable pageable);
-
     List<Post> findByDeletedFalse();
     Page<Post> findByDeletedFalseOrderByDateDesc(Pageable pageable);
     Page<Post> findByDeletedFalseOrderByLikeCountDesc(Pageable pageable);

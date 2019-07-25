@@ -74,11 +74,13 @@ public class PostsServiceImpl implements PostsService {
 
     @Override
     public List<PostDto> getPostsByDateByLike() {
-        List<Post> posts = postRepository.findByDeletedFalse();
+        Page<Post> posts = postRepository.findByDeletedFalseOrderByDateDesc(PageRequest.of(0, Integer.MAX_VALUE));
+        LocalDateTime date = posts.getContent().get(0).getDate();
+
         return posts.stream()
                 .map(PostDto::new)
                 .sorted(Comparator.comparing(PostDto::getLikeCount).reversed())
-                .filter(x -> x.getDate().isAfter(LocalDateTime.now().minusDays(7)))
+                .filter(x -> x.getDate().isAfter(date.minusDays(1)))
                 .limit(10)
                 .collect(Collectors.toList());
     }
