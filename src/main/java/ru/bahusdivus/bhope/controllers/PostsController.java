@@ -169,8 +169,7 @@ public class PostsController {
 
     @RequestMapping(value = "savePost", method = RequestMethod.POST)
     public String savePost(@ModelAttribute PostDto postDto) {
-        postsService.savePost(postDto);
-        return "redirect:/posts/" + postDto.getId();
+        return "redirect:/post/" + postsService.savePost(postDto).getId();
     }
 
     @RequestMapping(value = "findByUserName", method = RequestMethod.POST)

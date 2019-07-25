@@ -1,5 +1,6 @@
 <div th:replace="fragments/header" xmlns:th="http://www.w3.org/1999/xhtml"></div>
 <div th:replace="fragments/navbar"></div>
+<div class="topbar"></div>
 <div class="container bg-white pt-4 shadow">
     <div class="row">
         <div th:if="${userDetails != null}" class="col-2">
@@ -42,7 +43,7 @@
                             <p th:unless="${post.content.length() > 300}"  th:text="${post.content}"></p>
                         </div>
                         <div class="card-header d-flex flex-row align-items-center bg-light">
-                            <a class="mb-0 text-dark" th:href="${'/users/' + post.user.id + '/posts'}" th:text="${post.user.name}"></a>
+                            <a class="mb-0 text-dark" th:href="${'/users/' + post.user.id + '/posts/0'}" th:text="${post.user.name}"></a>
                             <p class="mb-0 ml-3 text-muted font-italic" th:text="${#temporals.format(post.date, 'dd.MM.yyyy HH:mm')}"></p>
                             <p class="mb-0 ml-auto mr-3">
                                 <i class="fas fa-comments text-gray-300"></i>
@@ -66,7 +67,7 @@
                 <nav th:if="${posts.getTotalPages() > 1}" aria-label="...">
                     <ul class="pagination justify-content-center text-secondary">
                         <li class="page-item" th:classappend="${posts.hasPrevious()} ? '' : disabled">
-                            <a class="page-link" tabindex="-1" th:href="${'/find/' + name + '/' + (posts.number-1)}">Предыдущая</a>
+                            <a class="page-link" tabindex="-1" th:href="${'/find/' + name + '/' + (posts.number - 1)}">Предыдущая</a>
                         </li>
                         <th:block th:each="i: ${#numbers.sequence(0, posts.totalPages - 1)}">
                             <li class="page-item"th:classappend="${posts.number == i} ? active : ''">
@@ -74,7 +75,7 @@
                             </li>
                         </th:block>
                         <li class="page-item" th:classappend="${posts.hasNext()} ? '' : disabled">
-                            <a class="page-link" href="#">Следующая</a>
+                            <a class="page-link" th:href="${'/find/' + name + '/' + (posts.number + 1)}">Следующая</a>
                         </li>
                     </ul>
                 </nav>

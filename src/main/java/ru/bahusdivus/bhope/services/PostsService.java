@@ -2,12 +2,13 @@ package ru.bahusdivus.bhope.services;
 
 import org.springframework.data.domain.Page;
 import ru.bahusdivus.bhope.dto.PostDto;
+import ru.bahusdivus.bhope.entities.Post;
 
 import java.util.List;
 
 public interface PostsService {
 
-    void savePost(PostDto post);
+    Post savePost(PostDto post);
     void deletePost(long id);
     int incrementLikeCount(long id);
     PostDto getPost(long id);

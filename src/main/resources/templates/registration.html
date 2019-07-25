@@ -1,52 +1,58 @@
 <div th:replace="fragments/header"></div>
 <div th:replace="fragments/navbar"></div>
-
-<h3 style="text-align:center">Регистрация</h3>
-<form name="userForm" th:action="@{/registration}" method="post">
-  <table border="0" cellpadding="1" cellspacing="1" style="width:500px; margin: auto">
-    <tbody>
-    <tr>
-      <td>
-        <p style="text-align:right">&nbsp;Логин:&nbsp;</p>
-      </td>
-      <td><input type="text" name="login" th:value="${userForm.login}"
+<div th:if="${error} != null" class="container fixed-bottom alert alert-danger alert-dismissible fade show mb-3 text-center" role="alert">
+  <p th:if="${error}" th:text="${error}" class="mb-0"></p>
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="min-vh-100 d-flex flex-column justify-content-center align-items-center bg-light">
+  <div class="card w-25">
+    <div class="card-header text-center text-uppercase">
+      <h2>Регистрация</h2>
+    </div>
+    <div class="card-body">
+      <form name="userForm" th:action="@{/registration}" method="post">
+        <div class="input-group mb-3">
+          <input type="text"  name="login" th:value="${userForm.login}"
                  pattern="[A-Za-z0-9]{1}[A-Za-z0-9_]{1,18}[A-Za-z0-9]$"
                  title="Логин должен содержать от 3 до 20 символов английского алфавита, цифр и симфолов подчеркивания,
-                  при этом начинаться с буквы или цифры"/></td>
-    </tr>
-    <tr>
-      <td>
-        <p style="text-align:right">Пароль:&nbsp;</p>
-      </td>
-      <td><input type="password" name="password" pattern=".{6,255}"
-                 title="пароль должен содержать не меньше 6 символов"/></td>
-    </tr>
-    <tr>
-      <td>
-        <p style="text-align:right">Подтверждение пароля:&nbsp;</p>
-      </td>
-      <td><input type="password" name="confirmPassword" pattern=".{6,255}"
-                 title="пароль должен содержать не меньше 6 символов"/></td>
-    </tr>
-    <tr>
-      <td>
-        <p style="text-align:right">Имя:&nbsp;</p>
-      </td>
-      <td><input type="text" name="name" id="name" th:value="${userForm.name}"/></td>
-    </tr>
-    <tr>
-      <td>
-        <p style="text-align:right">email:&nbsp;</p>
-      </td>
-      <td><input type="email" name="email" id="email" th:value="${userForm.email}"/></td>
-    </tr>
-    </tbody>
-  </table>
-  <p th:if="${error}" style="text-align:center; color:red"><span th:text="${error}"/></p>
-  <hr/>
-  <div style="text-align:center">
-    <input type="submit" value="Зарегистрироваться"/>
+                  при этом начинаться с буквы или цифры" class="form-control" placeholder="Логин" aria-label="Логин" aria-describedby="basic-addon2">
+          <div class="input-group-append">
+            <span class="input-group-text" id="basic-addon2">логин</span>
+          </div>
+        </div>
+        <div class="input-group mb-3">
+          <input type="password"  name="password" pattern=".{6,255}" title="пароль должен содержать не меньше 6 символов"
+                 class="form-control" placeholder="Пароль" aria-label="Пароль" aria-describedby="basic-addon3">
+          <div class="input-group-append">
+            <span class="input-group-text" id="basic-addon3">пароль</span>
+          </div>
+        </div>
+        <div class="input-group mb-3">
+          <input type="password"  name="confirmPassword" pattern=".{6,255}" title="пароль должен содержать не меньше 6 символов"
+                 class="form-control" placeholder="Подтверждение пароля" aria-label="Подтверждение пароля" aria-describedby="basic-addon4">
+          <div class="input-group-append">
+            <span class="input-group-text" id="basic-addon4">подтверждение</span>
+          </div>
+        </div>
+        <div class="input-group mb-3">
+          <input type="text"  name="name" class="form-control" placeholder="Имя" aria-label="Имя"
+                 aria-describedby="basic-addon5" th:value="${userForm.name}">
+          <div class="input-group-append">
+            <span class="input-group-text" id="basic-addon5">Имя</span>
+          </div>
+        </div>
+       <div class="input-group mb-3">
+          <input type="email"  name="email" class="form-control" placeholder="E-mail" aria-label="E-mail"
+                 aria-describedby="basic-addon6" th:value="${userForm.email}">
+          <div class="input-group-append">
+            <span class="input-group-text" id="basic-addon6">E-mail</span>
+          </div>
+        </div>
+        <input class="btn btn-secondary btn-block" type="submit" value="Зарегистрироваться" />
+      </form>
+    </div>
   </div>
-</form>
-
+</div>
 <div th:replace="fragments/footer"></div>
