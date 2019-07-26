@@ -7,14 +7,17 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.ui.Model;
-import ru.bahusdivus.bhope.dto.*;
+import ru.bahusdivus.bhope.dto.CommentDto;
+import ru.bahusdivus.bhope.dto.LikeAjaxRequest;
+import ru.bahusdivus.bhope.dto.PostDto;
+import ru.bahusdivus.bhope.dto.PostWithCommentsDto;
+import ru.bahusdivus.bhope.dto.UserDto;
 import ru.bahusdivus.bhope.services.CommentsService;
 import ru.bahusdivus.bhope.services.PostsService;
 import ru.bahusdivus.bhope.services.UserService;
 import ru.bahusdivus.bhope.utils.UserDetailsUserImpl;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 @Controller
@@ -97,7 +100,7 @@ public class PostsController {
     public String getPostByUserName(@PathVariable("name") String name,
                                     @PathVariable("pageNumber") int pageNumber,
                                     @AuthenticationPrincipal UserDetails userDetails,
-                                    Model model) throws UnsupportedEncodingException {
+                                    Model model) {
         model.addAttribute("login", userDetails != null ? userDetails.getUsername() : null);
         model.addAttribute("userDetails", userDetails);
         Page<PostDto> posts = postsService.getPostsByUserName(name, pageNumber);
