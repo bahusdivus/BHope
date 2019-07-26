@@ -1,44 +1,42 @@
-<div class="row bg-secondary">
-    <div class="col-sm-12" th:if="${login} != null">
-        <table border="1" cellpadding="1" cellspacing="1" style="width:100%">
-            <tbody>
-            <tr>
-                <td style="text-align:left">
-                    <form th:action="@{/}" method="get">
-                        <input type="submit" value="Главная"/>
-                    </form>
-                </td>
-                <td>
-                    <a th:href="'/users/' + ${login} + '/posts'"><span th:text="${login}"/></a>
-                </td>
-                <td style="text-align:right">
-                    <form th:action="@{/logout}" method="post">
-                        <input type="submit" value="Выход"/>
-                    </form>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+<nav class="navbar navbar-expand fixed-top bg-white topbar static-top shadow">
+
+    <a href="/" class="navbar-brand text-white btn btn-primary btn-icon-split btn-lg">
+        <span class="icon text-white-80">
+            <i class="fab fa-bootstrap"></i>
+        </span>
+        <span class="text text-lg font-weight-bold">Hope</span>
+    </a>
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ml-auto" th:if="${userDetails}">
+            <li class="nav-item">
+                <a class="nav-link" th:href="'/users/' + ${userDetails.id} + '/posts/0'">
+                    <span th:text="${userDetails.username}"/>
+                </a>
+            </li>
+            <li class="nav-item">
+                <form th:action="@{/logout}" method="post">
+                    <a class="nav-link" href="#" onclick="$(this).parent().submit();">Выйти</a>
+                </form>
+            </li>
+        </ul>
+        <ul class="navbar-nav ml-auto" th:unless="${userDetails}">
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/registration}">Регистрация</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/login}">Вход</a>
+            </li>
+        </ul>
     </div>
-    <div class="col-sm-12" th:if="${login} == null">
-        <table border="1" cellpadding="1" cellspacing="1" style="width:100%">
-            <tbody>
-            <tr>
-                <td style="text-align:left">
-                    <form th:action="@{/}" method="get">
-                        <input type="submit" value="Главная"/>
-                    </form>
-                </td>
-                <td style="text-align:right">
-                    <form th:action="@{/registration}" style="display: inline-block">
-                        <input type="submit" value="Регистрация"/>
-                    </form>
-                    <form th:action="@{/login}" style="display: inline-block">
-                        <input type="submit" value="Вход"/>
-                    </form>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
+</nav>
+<div th:if="${message} != null" class="container sticky-top alert alert-danger alert-dismissible fade show mb-0 " role="alert">
+    <p th:text="${message}"></p>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
 </div>

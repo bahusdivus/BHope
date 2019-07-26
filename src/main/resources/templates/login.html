@@ -1,13 +1,34 @@
 <div th:replace="fragments/header"></div>
 <div th:replace="fragments/navbar"></div>
-	login
-	<form th:action="@{/login}" method="post">
-		name: <input type="text" name="username" id="username"
-			th:value="${username}" /><br />
-		p w: <input type="password" name="password" id="password" /><br />
-		<div th:if="${logout}">You have been logged out successfully</div>
-		<div th:if="${error}">Invalid username and password.</div>
-		<input type="submit" value="sign in" />
-	</form>
-	<a href="/registration">registration</a>
+<div th:if="${logout} != null or ${error} != null" class="container fixed-bottom alert alert-danger alert-dismissible fade show mb-3 text-center" role="alert">
+	<p th:if="${logout}" th:text="${logout}" class="mb-0"></p>
+	<p th:if="${error}" th:text="${error}" class="mb-0"></p>
+	<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+		<span aria-hidden="true">&times;</span>
+	</button>
+</div>
+<div class="min-vh-100 d-flex flex-column justify-content-center align-items-center bg-light">
+	<div class="card w-25">
+		<div class="card-header text-center text-uppercase">
+			<h2>Вход</h2>
+		</div>
+		<div class="card-body">
+			<form th:action="@{/login}" method="post">
+				<div class="input-group mb-3">
+					<input type="text"  name="username" class="form-control" placeholder="Логин" aria-label="Логин" aria-describedby="basic-addon2">
+					<div class="input-group-append">
+						<span class="input-group-text" id="basic-addon2">логин</span>
+					</div>
+				</div>
+				<div class="input-group mb-3">
+					<input type="password"  name="password" class="form-control" placeholder="Пароль" aria-label="Пароль" aria-describedby="basic-addon3">
+					<div class="input-group-append">
+						<span class="input-group-text" id="basic-addon3">пароль</span>
+					</div>
+				</div>
+				<input class="btn btn-secondary btn-block" type="submit" value="Войти" />
+			</form>
+		</div>
+	</div>
+</div>
 <div th:replace="fragments/footer"></div>

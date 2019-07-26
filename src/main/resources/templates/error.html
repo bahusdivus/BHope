@@ -1,0 +1,14 @@
+<div th:replace="fragments/header" xmlns:th="http://www.w3.org/1999/xhtml"></div>
+<div class="min-vh-100 d-flex flex-column justify-content-center bg-light">
+    <div th:if="${statusCode != null}" class="text-center">
+        <div class="error mx-auto" th:attr="data-text=${statusCode}" th:text="${statusCode}"></div>
+        <p class="lead text-gray-800 mb-5" th:text="${errorMessage}">Page Not Found</p>
+        <a href="/">← Попробуйте начать сначала</a>
+    </div>
+    <div th:unless="${statusCode != null}" class="text-center">
+        <div class="error mx-auto" data-text="000">000</div>
+        <p class="lead text-gray-800 mb-5">Неизвестная ошибка</p>
+        <a href="index.html">← Попробуйте начать сначала</a>
+</div>
+</div>
+<div th:replace="fragments/footer"></div>
