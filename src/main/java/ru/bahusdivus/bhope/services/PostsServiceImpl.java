@@ -24,9 +24,7 @@ public class PostsServiceImpl implements PostsService {
 
     @Override
     public void savePost(PostDto postDto) {
-
-        Post post = postRepository.findById(postDto.getId())
-                .orElse(new Post(postDto.getUser()));
+        Post post = postRepository.findById(postDto.getId()).orElse(new Post(postDto.getUser()));
         post.setTitle(postDto.getTitle());
         post.setContent(postDto.getContent());
         postRepository.save(post);
@@ -61,15 +59,13 @@ public class PostsServiceImpl implements PostsService {
 
     public Page<PostDto> getPostsOrderByDate(int pageNumber) {
         Page<Post> posts = postRepository.findByDeletedFalseOrderByDateDesc(PageRequest.of(pageNumber, 5));
-        Page<PostDto> postDto = posts.map(PostDto::new);
-        return postDto;
+        return posts.map(PostDto::new);
     }
 
     @Override
     public Page<PostDto> getPostsOrderByLikeCount(int pageNumber) {
         Page<Post> posts = postRepository.findByDeletedFalseOrderByLikeCountDesc(PageRequest.of(pageNumber, 5));
-        Page<PostDto> postDto = posts.map(PostDto::new);
-        return postDto;
+        return posts.map(PostDto::new);
     }
 
     @Override
@@ -89,15 +85,13 @@ public class PostsServiceImpl implements PostsService {
     public Page<PostDto> getPostsByUserId(long userId, int pageNumber) {
         Page<Post> posts = postRepository.findByUserIdAndDeletedFalseOrderByDateDesc(userId,
                 PageRequest.of(pageNumber, 5));
-        Page<PostDto> postDto = posts.map(PostDto::new);
-        return postDto;
+        return posts.map(PostDto::new);
     }
 
     @Override
     public Page<PostDto> getPostsByUserName(String userName, int pageNumber) {
         Page<Post> posts = postRepository.findByUserNameIgnoreCaseLikeAndDeletedFalseOrderByDateDesc
                 ("%" + userName.toLowerCase() + "%", PageRequest.of(pageNumber, 5));
-        Page<PostDto> postDto = posts.map(PostDto::new);
-        return postDto;
+        return posts.map(PostDto::new);
     }
 }

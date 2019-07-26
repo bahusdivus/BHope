@@ -15,7 +15,6 @@ import ru.bahusdivus.bhope.services.PostsService;
 import ru.bahusdivus.bhope.services.UserService;
 import ru.bahusdivus.bhope.utils.UserDetailsUserImpl;
 
-import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 @Controller
