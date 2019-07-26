@@ -18,6 +18,8 @@ import ru.bahusdivus.bhope.services.UserService;
 import ru.bahusdivus.bhope.utils.UserDetailsUserImpl;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.List;
 
 @Controller
@@ -176,10 +178,10 @@ public class PostsController {
     }
 
     @RequestMapping(value = "findByUserName", method = RequestMethod.POST)
-    public String findByUserName(@ModelAttribute UserDto userDto) {
+    public String findByUserName(@ModelAttribute UserDto userDto) throws UnsupportedEncodingException {
 
         if (userDto.getName() != "") {
-            return "redirect:/find/" + userDto.getName() + "/0";
+            return "redirect:/find/" + URLEncoder.encode(userDto.getName(), "UTF-8") + "/0";
         }
 
         return "redirect:/";
