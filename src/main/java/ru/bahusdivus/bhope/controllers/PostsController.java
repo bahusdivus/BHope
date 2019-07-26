@@ -177,7 +177,12 @@ public class PostsController {
 
     @RequestMapping(value = "findByUserName", method = RequestMethod.POST)
     public String findByUserName(@ModelAttribute UserDto userDto) {
-        return "redirect:/find/" + userDto.getName() + "/0";
+
+        if (userDto.getName() != "") {
+            return "redirect:/find/" + userDto.getName() + "/0";
+        }
+
+        return "redirect:/";
     }
 
     @RequestMapping(value = "incrementLikeCount", method = RequestMethod.POST)

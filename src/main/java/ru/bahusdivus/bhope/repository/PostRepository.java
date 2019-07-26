@@ -6,9 +6,12 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import ru.bahusdivus.bhope.entities.Post;
 
+import java.util.List;
+
 public interface PostRepository extends PagingAndSortingRepository<Post, Long> {
     Page<Post> findByUserIdAndDeletedFalseOrderByDateDesc(long userId, Pageable pageable);
     Page<Post> findByUserNameIgnoreCaseLikeAndDeletedFalseOrderByDateDesc(@Param("name") String name, Pageable pageable);
     Page<Post> findByDeletedFalseOrderByDateDesc(Pageable pageable);
     Page<Post> findByDeletedFalseOrderByLikeCountDesc(Pageable pageable);
+    List<Post> findByTitleOrderByDateDesc(String title);
 }
