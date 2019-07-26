@@ -82,6 +82,9 @@ public class PostsController {
                                 Model model) {
         model.addAttribute("userDetails", userDetails);
         UserDto userDto = userService.findById(userId);
+        if (userDto == null) {
+            return MyErrorController.getError(404, model);
+        }
         PostDto postDto = new PostDto();
         Page<PostDto> posts = postsService.getPostsByUserId(userId, pageNumber);
         model.addAttribute("postDto", postDto);
@@ -160,7 +163,11 @@ public class PostsController {
 
     @RequestMapping(value = "findByUserName", method = RequestMethod.POST)
     public String findByUserName(@ModelAttribute UserDto userDto) throws UnsupportedEncodingException {
-        return "redirect:/find/" + URLEncoder.encode(userDto.getName(), "UTF-8") + "/0";
+
+        if (!"".equals(userDto.getName())) {
+            return "redirect:/find/" + URLEncoder.encode(userDto.getName(), "UTF-8") + "/0";
+        }
+        return "redirect:/";
     }
 
     @RequestMapping(value = "incrementLikeCount", method = RequestMethod.POST)
