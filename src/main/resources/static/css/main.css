@@ -31,3 +31,7 @@
     background-color: #f8f9fc;
     border-color: #dddfeb;
 }
+
+#wrapper {
+    min-height: 100vh;
+}

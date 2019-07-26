@@ -12,8 +12,25 @@ $(function () {
            beforeSend: function(request) {
                request.setRequestHeader('Csrf-Token', $('input[name="_csrf"]').attr('value'));
                request.setRequestHeader('X-CSRF-Token', $('input[name="_csrf"]').attr('value'));
-           },success: (function (data) {
+           },
+           success: (function (data) {
                $link.children('span').html(data);
+           })
+       })
+   });
+
+   $('.edit').on("click", function (e) {
+       e.preventDefault();
+       $.ajax({
+           type: 'GET',
+           url: $(this).attr("href"),
+           cache: false,
+           beforeSend: function(request) {
+               request.setRequestHeader('Csrf-Token', $('input[name="_csrf"]').attr('value'));
+               request.setRequestHeader('X-CSRF-Token', $('input[name="_csrf"]').attr('value'));
+           },
+           success: (function (data) {
+               $('#edit-modal').find(".modal-content").empty().append(data);
            })
        })
    });
