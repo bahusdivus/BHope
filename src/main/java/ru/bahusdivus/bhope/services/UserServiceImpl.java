@@ -49,4 +49,27 @@ public class UserServiceImpl implements UserService {
         Optional<User> userOptional = userRepository.findById(id);
         return userOptional.map(UserDto::new).orElse(null);
     }
+
+    @Override
+    public User changeUserData(User user, UserRegistrationDto userForm) {
+        if (!user.getName().equals(userForm.getName()) && user.getEmail().equals(userForm.getEmail())) {
+            userRepository.changeName(user.getId(), userForm.getName());
+            user.setName(userForm.getName());
+        } else if (!user.getEmail().equals(userForm.getEmail()) && user.getName().equals(userForm.getName())) {
+            userRepository.changeEmail(user.getId(), userForm.getEmail());
+            user.setEmail(userForm.getEmail());
+        } else {
+            userRepository.changeNameAndEmail(user.getId(), userForm.getName(), userForm.getEmail());
+            user.setName(userForm.getName());
+            user.setEmail(userForm.getEmail());
+        }
+        return user;
+    }
+
+    @Override
+    public User changePassword(User user, UserRegistrationDto userForm) {
+        user.setPassword(bCryptPasswordEncoder.encode(userForm.getPassword()));
+        userRepository.changePassword(user.getId(), user.getPassword());
+        return user;
+    }
 }

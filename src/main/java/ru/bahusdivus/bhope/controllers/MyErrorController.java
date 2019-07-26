@@ -12,6 +12,21 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class MyErrorController implements ErrorController {
 
+    public static String getError(int statusCode, Model model) {
+        String message = null;
+        if (statusCode == 404) {
+            message = "Страница не найдена";
+        } else if (statusCode == 401) {
+            message = "Нужно авторизоваться";
+        } else if (statusCode == 403) {
+            message = "Нет доступа";
+        }
+        model.addAttribute("errorMessage", message);
+        model.addAttribute("statusCode", statusCode);
+
+        return "error";
+    }
+
     @RequestMapping("/error")
     public String handleError(HttpServletRequest request, Model model) {
 

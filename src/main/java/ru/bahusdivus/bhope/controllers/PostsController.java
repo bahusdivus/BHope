@@ -111,7 +111,7 @@ public class PostsController {
                                  Model model) {
 
         if (userDetails == null) {
-            return getError(401, model);
+            return MyErrorController.getError(401, model);
         }
         model.addAttribute("userDetails", userDetails);
 
@@ -127,13 +127,13 @@ public class PostsController {
                                   Model model) {
 
         if (userDetails == null) {
-            return getError(401, model);
+            return MyErrorController.getError(401, model);
         }
         model.addAttribute("userDetails", userDetails);
 
         PostDto postDto = postsService.getPost(postId);
         if (userDetails.getId() != postDto.getUser().getId()) {
-            return getError(403, model);
+            return MyErrorController.getError(403, model);
         }
         model.addAttribute("post", postDto);
         return "editPost";
@@ -143,11 +143,11 @@ public class PostsController {
     public String deletePost(@PathVariable("postId") long postId,
                              @AuthenticationPrincipal UserDetailsUserImpl userDetails, Model model) {
         if (userDetails == null) {
-            return getError(401, model);
+            return MyErrorController.getError(401, model);
         }
         if (userDetails.getId() != postsService.getPost(postId).getUser().getId()
                 && !userDetails.getAdmin()) {
-            return getError(403, model);
+            return MyErrorController.getError(403, model);
         }
         postsService.deletePost(postId);
         return "redirect:/";
@@ -196,11 +196,11 @@ public class PostsController {
                                      @AuthenticationPrincipal UserDetailsUserImpl userDetails,
                                      Model model) {
         if (userDetails == null) {
-            return getError(401, model);
+            return MyErrorController.getError(401, model);
         }
         CommentDto comment = commentsService.getComment(id);
         if (userDetails.getId() != comment.getUser().getId()) {
-            return getError(403, model);
+            return MyErrorController.getError(403, model);
         }
         model.addAttribute("comment", comment);
         return "commentPage";
@@ -213,7 +213,7 @@ public class PostsController {
                                               Model model) {
 
         if (userDetails == null) {
-            return getError(401, model);
+            return MyErrorController.getError(401, model);
         }
         model.addAttribute("userDetails", userDetails);
 
@@ -231,11 +231,11 @@ public class PostsController {
                                 @PathVariable("id") long id,
                                 @AuthenticationPrincipal UserDetailsUserImpl userDetails, Model model) {
         if (userDetails == null) {
-            return getError(401, model);
+            return MyErrorController.getError(401, model);
         }
         if (userDetails.getId() != commentsService.getComment(id).getUser().getId()
                 && !userDetails.getAdmin()) {
-            return getError(403, model);
+            return MyErrorController.getError(403, model);
         }
         commentsService.deleteComment(id);
         return "redirect:/post/" + postId;
@@ -247,18 +247,4 @@ public class PostsController {
         return "redirect:/post/" + comment.getPost();
     }
 
-    private String getError(int statusCode, Model model) {
-        String message = null;
-        if (statusCode == 404) {
-            message = "Страница не найдена";
-        } else if (statusCode == 401) {
-            message = "Нужно авторизоваться";
-        } else if (statusCode == 403) {
-            message = "Нет доступа";
-        }
-        model.addAttribute("errorMessage", message);
-        model.addAttribute("statusCode", statusCode);
-
-        return "error";
-    }
 }
