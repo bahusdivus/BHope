@@ -246,5 +246,4 @@ public class PostsController {
         commentsService.saveComment(comment);
         return "redirect:/post/" + comment.getPost();
     }
-
 }

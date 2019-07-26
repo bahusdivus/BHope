@@ -8,30 +8,40 @@
     <changeSet id="initial users table" author="Vladimir">
         <insert tableName="T_USERS">
             <column name="ID" valueNumeric="nextval('USER_SEQ')"/>
-            <column name="LOGIN" value="User1"/>
-            <column name="NAME" value="UserName 1"/>
-            <column name="PASSWORD" value="$2a$10$Jl.R0i9ltAF/TlAckUUBguJKo/C6xTytO/13tXu0v35cVva1Qy9zC"/> <!--user1-->
-            <column name="EMAIL" value="user1@email.test"/>
+            <column name="LOGIN" value="Admin"/>
+            <column name="NAME" value="BHope"/>
+            <column name="PASSWORD" value="$2a$10$WmYdr7Tx4df2g.4JC3Tl3OsR.FpeKhItVSLClxyWOPkK16tObMhXS"/> <!--adminadmin-->
+            <column name="EMAIL" value="admin@bnope.ru"/>
             <column name="IS_ADMIN" value="true"/>
             <column name="DATE" value="2019-07-16 23:07:55+03"/>
             <column name="DELETED" value="false"/>
         </insert>
         <insert tableName="T_USERS">
             <column name="ID" valueNumeric="nextval('USER_SEQ')"/>
-            <column name="LOGIN" value="User2"/>
-            <column name="NAME" value="UserName 2"/>
-            <column name="PASSWORD" value="$2a$10$S5MB4mPjCv1ZK7pf7468w.pHqfmg5YjoW/ZTEU7W7sX/td6Q940a."/> <!--user2-->
-            <column name="EMAIL" value="user2@email.test"/>
+            <column name="LOGIN" value="Vladimir"/>
+            <column name="NAME" value="Владимир"/>
+            <column name="PASSWORD" value="$2a$10$mw4Be747VDM/9ln9S9GMBul96tRfvIUSlK5gkzCYhUkwXsfREGbUq"/> <!--adminvladimir-->
+            <column name="EMAIL" value="vladimir@bnope.ru"/>
             <column name="IS_ADMIN" value="false"/>
             <column name="DATE" value="2019-07-16 23:08:55+03"/>
             <column name="DELETED" value="false"/>
         </insert>
         <insert tableName="T_USERS">
             <column name="ID" valueNumeric="nextval('USER_SEQ')"/>
-            <column name="LOGIN" value="User3"/>
-            <column name="NAME" value="UserName 3"/>
-            <column name="PASSWORD" value="$2a$10$Z5qskCBTkCclHw.uZmcuvOMRMVNWyeadBzToG9pF2SJCaxPdwSyWC"/> <!--user3-->
-            <column name="EMAIL" value="user3@email.test"/>
+            <column name="LOGIN" value="Dionisy"/>
+            <column name="NAME" value="Дионисий"/>
+            <column name="PASSWORD" value="$2a$10$RXB/rhwDICuDKhM5IsNam.G47JqURgRzPy2w/SySylvkywxdvlOXy"/> <!--admindionisy-->
+            <column name="EMAIL" value="dionisy@bnope.ru"/>
+            <column name="IS_ADMIN" value="false"/>
+            <column name="DATE" value="2019-07-16 23:09:55+03"/>
+            <column name="DELETED" value="false"/>
+        </insert>
+        <insert tableName="T_USERS">
+            <column name="ID" valueNumeric="nextval('USER_SEQ')"/>
+            <column name="LOGIN" value="Tatanka"/>
+            <column name="NAME" value="Татьяна"/>
+            <column name="PASSWORD" value="$2a$10$e.dg.QPg75ULM2CXnESaEevvSzYUWcz5vOZRn2i9TboFXgX0lmOgW"/> <!--admintatanka-->
+            <column name="EMAIL" value="tatanka@bnope.ru"/>
             <column name="IS_ADMIN" value="false"/>
             <column name="DATE" value="2019-07-16 23:09:55+03"/>
             <column name="DELETED" value="false"/>

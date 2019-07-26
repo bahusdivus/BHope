@@ -1,16 +1,23 @@
-<div th:replace="fragments/header"></div>
-<div th:replace="fragments/navbar"></div>
-    <div class="row">
-        <div class="col-sm-12">
-            <form th:object="${comment}" th:action="@{/saveComment}" method="post">
-                <textarea th:field="*{content}"></textarea>
-                <input type="hidden" th:field="*{id}"  />
-                <input type="hidden" th:field="*{user.id}" />
-                <input type="hidden" th:field="*{parent}" />
-                <input type="hidden" th:field="*{post}" />
-                <input type="submit" value="Сохранить" />
-                <input type="button" value="Отменить" onclick="history.back();">
-            </form>
+    <form th:object="${comment}" th:action="@{/saveComment}" method="post">
+        <div class="modal-header">
+            <h5 th:if="*{id} == 0" class="modal-title" id="modalLabel">Новый комментарий</h5>
+            <h5 th:unless="*{id} == 0" class="modal-title" id="modalLabel">Редактировать комментарий</h5>
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
         </div>
-    </div>
-<div th:replace="fragments/footer"></div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label for="postText">Текст комментария</label>
+                <textarea th:field="*{content}" class="form-control" id="postText" rows="10"></textarea>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <input type="hidden" th:field="*{id}"  />
+            <input type="hidden" th:field="*{user.id}" />
+            <input type="hidden" th:field="*{parent}" />
+            <input type="hidden" th:field="*{post}" />
+            <button class="btn btn-secondary" type="button" data-dismiss="modal" value="Отменить">Отменить</button>
+            <button class="btn btn-primary" type="submit" value="Сохранить">Сохранить</button>
+        </div>
+    </form>

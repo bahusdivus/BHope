@@ -8,63 +8,44 @@
     <changeSet id="initial comments table" author="Vladimir">
         <insert tableName="T_COMMENTS">
             <column name="ID" valueNumeric="nextval('COMMENT_SEQ')"/>
-            <column name="POST_ID" valueComputed="(SELECT ID FROM T_POSTS WHERE TITLE = 'Заголовок1')"/>
-            <column name="USER_ID" valueComputed="(SELECT ID FROM T_USERS WHERE LOGIN = 'User1')"/>
-            <column name="CONTENT" value="Коммент 1"/>
+            <column name="POST_ID" valueComputed="(SELECT ID FROM T_POSTS WHERE TITLE = 'Удивительные способности дельфинов.')"/>
+            <column name="USER_ID" valueComputed="(SELECT ID FROM T_USERS WHERE LOGIN = 'Tatanka')"/>
+            <column name="CONTENT" value="Интересная статья, спасибо!"/>
             <column name="DATE" value="2019-07-17 03:11:55+03"/>
             <column name="DELETED" value="false"/>
         </insert>
         <insert tableName="T_COMMENTS">
             <column name="ID" valueNumeric="nextval('COMMENT_SEQ')"/>
-            <column name="POST_ID" valueComputed="(SELECT ID FROM T_POSTS WHERE TITLE = 'Заголовок1')"/>
-            <column name="USER_ID" valueComputed="(SELECT ID FROM T_USERS WHERE LOGIN = 'User1')"/>
-            <column name="CONTENT" value="Коммент 2"/>
+            <column name="POST_ID" valueComputed="(SELECT ID FROM T_POSTS WHERE TITLE = 'Удивительные способности дельфинов.')"/>
+            <column name="USER_ID" valueComputed="(SELECT ID FROM T_USERS WHERE LOGIN = 'Dionisy')"/>
+            <column name="CONTENT" value="А сколько живут дельфины?"/>
             <column name="DATE" value="2019-07-17 03:12:55+03"/>
             <column name="DELETED" value="false"/>
         </insert>
         <insert tableName="T_COMMENTS">
             <column name="ID" valueNumeric="nextval('COMMENT_SEQ')"/>
-            <column name="PARENT_ID" valueComputed="(SELECT ID FROM T_COMMENTS WHERE CONTENT = 'Коммент 1')"/>
-            <column name="POST_ID" valueComputed="(SELECT ID FROM T_POSTS WHERE TITLE = 'Заголовок1')"/>
-            <column name="USER_ID" valueComputed="(SELECT ID FROM T_USERS WHERE LOGIN = 'User2')"/>
-            <column name="CONTENT" value="Коммент 1-1"/>
+            <column name="PARENT_ID" valueComputed="(SELECT ID FROM T_COMMENTS WHERE CONTENT = 'А сколько живут дельфины?')"/>
+            <column name="POST_ID" valueComputed="(SELECT ID FROM T_POSTS WHERE TITLE = 'Удивительные способности дельфинов.')"/>
+            <column name="USER_ID" valueComputed="(SELECT ID FROM T_USERS WHERE LOGIN = 'Vladimir')"/>
+            <column name="CONTENT" value="Живут дельфины до 75 лет, чаще около 50-ти, в неволе обычно около 30-ти."/>
             <column name="DATE" value="2019-07-17 03:13:55+03"/>
             <column name="DELETED" value="false"/>
         </insert>
         <insert tableName="T_COMMENTS">
             <column name="ID" valueNumeric="nextval('COMMENT_SEQ')"/>
-            <column name="POST_ID" valueComputed="(SELECT ID FROM T_POSTS WHERE TITLE = 'Заголовок 5: длиннопост?')"/>
-            <column name="USER_ID" valueComputed="(SELECT ID FROM T_USERS WHERE LOGIN = 'User1')"/>
-            <column name="CONTENT" value="Это просто то что надо!"/>
-            <column name="DATE" value="2019-07-17 03:14:55+03"/>
-            <column name="DELETED" value="false"/>
-        </insert>
-        <insert tableName="T_COMMENTS">
-            <column name="ID" valueNumeric="nextval('COMMENT_SEQ')"/>
             <column name="PARENT_ID"
-                    valueComputed="(SELECT ID FROM T_COMMENTS WHERE CONTENT = 'Это просто то что надо!')"/>
-            <column name="POST_ID" valueComputed="(SELECT ID FROM T_POSTS WHERE TITLE = 'Заголовок 5: длиннопост?')"/>
-            <column name="USER_ID" valueComputed="(SELECT ID FROM T_USERS WHERE LOGIN = 'User1')"/>
-            <column name="CONTENT" value="Согласен! Самый крутой пост в этом блоге!"/>
+                    valueComputed="(SELECT ID FROM T_COMMENTS WHERE CONTENT = 'Живут дельфины до 75 лет, чаще около 50-ти, в неволе обычно около 30-ти.')"/>
+            <column name="POST_ID" valueComputed="(SELECT ID FROM T_POSTS WHERE TITLE = 'Удивительные способности дельфинов.')"/>
+            <column name="USER_ID" valueComputed="(SELECT ID FROM T_USERS WHERE LOGIN = 'Dionisy')"/>
+            <column name="CONTENT" value="Спасибо!!"/>
             <column name="DATE" value="2019-07-17 03:15:55+03"/>
             <column name="DELETED" value="false"/>
         </insert>
         <insert tableName="T_COMMENTS">
             <column name="ID" valueNumeric="nextval('COMMENT_SEQ')"/>
-            <column name="PARENT_ID"
-                    valueComputed="(SELECT ID FROM T_COMMENTS WHERE CONTENT = 'Согласен! Самый крутой пост в этом блоге!')"/>
-            <column name="POST_ID"
-                    valueComputed="(SELECT ID FROM T_POSTS WHERE TITLE = 'Заголовок 5: длиннопост?')"/>
-            <column name="USER_ID" valueComputed="(SELECT ID FROM T_USERS WHERE LOGIN = 'User3')"/>
-            <column name="CONTENT" value="Сам себя не похвалишь, никто не похвалит)"/>
-            <column name="DATE" value="2019-07-17 03:16:55+03"/>
-            <column name="DELETED" value="false"/>
-        </insert>
-        <insert tableName="T_COMMENTS">
-            <column name="ID" valueNumeric="nextval('COMMENT_SEQ')"/>
-            <column name="POST_ID" valueComputed="(SELECT ID FROM T_POSTS WHERE TITLE = 'Заголовок 5: длиннопост?')"/>
-            <column name="USER_ID" valueComputed="(SELECT ID FROM T_USERS WHERE LOGIN = 'User2')"/>
-            <column name="CONTENT" value="Чётко и по делу. Спасибо! Скорей бы лайки ввели, я бы сразу два поставил)"/>
+            <column name="POST_ID" valueComputed="(SELECT ID FROM T_POSTS WHERE TITLE = 'Самое быстрое наземное млекопитающее Гепард.')"/>
+            <column name="USER_ID" valueComputed="(SELECT ID FROM T_USERS WHERE LOGIN = 'Tatanka')"/>
+            <column name="CONTENT" value="А какое животное самое медленное?"/>
             <column name="DATE" value="2019-07-17 03:16:51+03"/>
             <column name="DELETED" value="false"/>
         </insert>
