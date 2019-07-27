@@ -1,0 +1,68 @@
+<div th:replace="fragments/header"></div>
+<div th:replace="fragments/navbar"></div>
+<div th:if="${message} != null"
+     class="container fixed-bottom alert alert-info alert-dismissible fade show mb-3 text-center" role="alert">
+    <p th:if="${message}" th:text="${message}" class="mb-0"></p>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div th:if="${error} != null"
+     class="container fixed-bottom alert alert-danger alert-dismissible fade show mb-3 text-center" role="alert">
+    <p th:if="${error}" th:text="${error}" class="mb-0"></p>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="min-vh-100 d-flex flex-column justify-content-center align-items-center bg-light">
+    <div class="card w-25">
+        <div class="card-header text-center text-uppercase">
+            <h2>Вы можете изменить личные данные</h2>
+        </div>
+        <div class="card-body">
+            <form name="userForm" th:action="@{/account}" method="post">
+                <div class="input-group mb-3">
+                    <div th:text="${userForm.login}"
+                           class="form-control" placeholder="Логин" aria-label="Логин" aria-describedby="basic-addon2"/>
+                    <div class="input-group-append">
+                        <span class="input-group-text" id="basic-addon2">логин</span>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    <input type="password" name="password" pattern=".{6,255}"
+                           title="пароль должен содержать не меньше 6 символов"
+                           class="form-control" placeholder="Пароль" aria-label="Пароль"
+                           aria-describedby="basic-addon3">
+                    <div class="input-group-append">
+                        <span class="input-group-text" id="basic-addon3">пароль</span>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    <input type="password" name="confirmPassword" pattern=".{6,255}"
+                           title="пароль должен содержать не меньше 6 символов"
+                           class="form-control" placeholder="Подтверждение пароля" aria-label="Подтверждение пароля"
+                           aria-describedby="basic-addon4">
+                    <div class="input-group-append">
+                        <span class="input-group-text" id="basic-addon4">подтверждение</span>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    <input type="text" name="name" class="form-control" placeholder="Имя" aria-label="Имя"
+                           aria-describedby="basic-addon5" th:value="${userForm.name}">
+                    <div class="input-group-append">
+                        <span class="input-group-text" id="basic-addon5">Имя</span>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    <input type="email" name="email" class="form-control" placeholder="E-mail" aria-label="E-mail"
+                           aria-describedby="basic-addon6" th:value="${userForm.email}">
+                    <div class="input-group-append">
+                        <span class="input-group-text" id="basic-addon6">E-mail</span>
+                    </div>
+                </div>
+                <input class="btn btn-secondary btn-block" type="submit" value="Изменить данные"/>
+            </form>
+        </div>
+    </div>
+</div>
+<div th:replace="fragments/footer"></div>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="create comments sequence" author="tatanka">
+        <createSequence cycle="false"
+                        incrementBy="10"
+                        sequenceName="COMMENT_SEQ"/>
+        <rollback>
+            <sql>
+                DROP SEQUENCE COMMENT_SEQ;
+            </sql>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="create comments table" author="Vladimir">
+        <createTable tableName="T_COMMENTS">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" unique="true" primaryKey="true"/>
+            </column>
+            <column name="PARENT_ID" type="BIGINT">
+                <constraints nullable="true"/>
+            </column>
+            <column name="POST_ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="USER_ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CONTENT" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DATE" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DELETED" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="T_COMMENTS" baseColumnNames="USER_ID"
+                                 constraintName="FK_COMMENTS_USER"
+                                 referencedTableName="T_USERS" referencedColumnNames="ID"/>
+        <addForeignKeyConstraint baseTableName="T_COMMENTS" baseColumnNames="POST_ID"
+                                 constraintName="FK_COMMENTS_POST"
+                                 referencedTableName="T_POSTS" referencedColumnNames="ID"/>
+        <addForeignKeyConstraint baseTableName="T_COMMENTS" baseColumnNames="PARENT_ID"
+                                 constraintName="FK_COMMENTS_PARENT"
+                                 referencedTableName="T_COMMENTS" referencedColumnNames="ID"/>
+        <rollback>
+            <sql>
+                ALTER TABLE COMMENTS DROP FOREIGN KEY FK_COMMENTS_USER;
+                ALTER TABLE COMMENTS DROP FOREIGN KEY FK_COMMENTS_POST;
+            </sql>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

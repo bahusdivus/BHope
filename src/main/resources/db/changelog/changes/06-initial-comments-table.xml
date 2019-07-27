@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="initial comments table" author="Vladimir">
+        <insert tableName="T_COMMENTS">
+            <column name="ID" valueNumeric="nextval('COMMENT_SEQ')"/>
+            <column name="POST_ID" valueComputed="(SELECT ID FROM T_POSTS WHERE TITLE = 'Удивительные способности дельфинов.')"/>
+            <column name="USER_ID" valueComputed="(SELECT ID FROM T_USERS WHERE LOGIN = 'Tatanka')"/>
+            <column name="CONTENT" value="Интересная статья, спасибо!"/>
+            <column name="DATE" value="2019-07-17 03:11:55+03"/>
+            <column name="DELETED" value="false"/>
+        </insert>
+        <insert tableName="T_COMMENTS">
+            <column name="ID" valueNumeric="nextval('COMMENT_SEQ')"/>
+            <column name="POST_ID" valueComputed="(SELECT ID FROM T_POSTS WHERE TITLE = 'Удивительные способности дельфинов.')"/>
+            <column name="USER_ID" valueComputed="(SELECT ID FROM T_USERS WHERE LOGIN = 'Dionisy')"/>
+            <column name="CONTENT" value="А сколько живут дельфины?"/>
+            <column name="DATE" value="2019-07-17 03:12:55+03"/>
+            <column name="DELETED" value="false"/>
+        </insert>
+        <insert tableName="T_COMMENTS">
+            <column name="ID" valueNumeric="nextval('COMMENT_SEQ')"/>
+            <column name="PARENT_ID" valueComputed="(SELECT ID FROM T_COMMENTS WHERE CONTENT = 'А сколько живут дельфины?')"/>
+            <column name="POST_ID" valueComputed="(SELECT ID FROM T_POSTS WHERE TITLE = 'Удивительные способности дельфинов.')"/>
+            <column name="USER_ID" valueComputed="(SELECT ID FROM T_USERS WHERE LOGIN = 'Vladimir')"/>
+            <column name="CONTENT" value="Живут дельфины до 75 лет, чаще около 50-ти, в неволе обычно около 30-ти."/>
+            <column name="DATE" value="2019-07-17 03:13:55+03"/>
+            <column name="DELETED" value="false"/>
+        </insert>
+        <insert tableName="T_COMMENTS">
+            <column name="ID" valueNumeric="nextval('COMMENT_SEQ')"/>
+            <column name="PARENT_ID"
+                    valueComputed="(SELECT ID FROM T_COMMENTS WHERE CONTENT = 'Живут дельфины до 75 лет, чаще около 50-ти, в неволе обычно около 30-ти.')"/>
+            <column name="POST_ID" valueComputed="(SELECT ID FROM T_POSTS WHERE TITLE = 'Удивительные способности дельфинов.')"/>
+            <column name="USER_ID" valueComputed="(SELECT ID FROM T_USERS WHERE LOGIN = 'Dionisy')"/>
+            <column name="CONTENT" value="Спасибо!!"/>
+            <column name="DATE" value="2019-07-17 03:15:55+03"/>
+            <column name="DELETED" value="false"/>
+        </insert>
+        <insert tableName="T_COMMENTS">
+            <column name="ID" valueNumeric="nextval('COMMENT_SEQ')"/>
+            <column name="POST_ID" valueComputed="(SELECT ID FROM T_POSTS WHERE TITLE = 'Самое быстрое наземное млекопитающее Гепард.')"/>
+            <column name="USER_ID" valueComputed="(SELECT ID FROM T_USERS WHERE LOGIN = 'Tatanka')"/>
+            <column name="CONTENT" value="А какое животное самое медленное?"/>
+            <column name="DATE" value="2019-07-17 03:16:51+03"/>
+            <column name="DELETED" value="false"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

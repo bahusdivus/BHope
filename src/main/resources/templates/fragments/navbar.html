@@ -1,0 +1,47 @@
+<nav class="navbar navbar-expand fixed-top bg-white topbar static-top shadow">
+
+    <a href="/" class="navbar-brand text-white btn btn-primary btn-icon-split btn-lg">
+        <span class="icon text-white-80">
+            <i class="fab fa-bootstrap"></i>
+        </span>
+        <span class="text text-lg font-weight-bold">Hope</span>
+    </a>
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ml-auto" th:if="${userDetails}">
+            <li class="nav-item">
+                <a class="nav-link" href='/account'>
+                    Настройки аккаунта
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="'/users/' + ${userDetails.id} + '/posts/0'">
+                    Мои посты
+                </a>
+            </li>
+            <li class="nav-item">
+                <form th:action="@{/logout}" method="post">
+                    <a class="nav-link" href="#" onclick="$(this).parent().submit();">Выйти</a>
+                </form>
+            </li>
+        </ul>
+        <ul class="navbar-nav ml-auto" th:unless="${userDetails}">
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/registration}">Регистрация</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/login}">Вход</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div th:if="${message} != null" class="container sticky-top alert alert-danger alert-dismissible fade show mb-0 " role="alert">
+    <p th:text="${message}"></p>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
