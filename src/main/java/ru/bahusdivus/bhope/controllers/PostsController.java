@@ -1,23 +1,21 @@
 package ru.bahusdivus.bhope.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import ru.bahusdivus.bhope.dto.CommentDto;
-import ru.bahusdivus.bhope.dto.LikeAjaxRequest;
-import ru.bahusdivus.bhope.dto.PostDto;
-import ru.bahusdivus.bhope.dto.PostWithCommentsDto;
-import ru.bahusdivus.bhope.dto.UserDto;
+import org.springframework.web.bind.annotation.*;
+import ru.bahusdivus.bhope.dto.*;
 import ru.bahusdivus.bhope.services.CommentsService;
 import ru.bahusdivus.bhope.services.PostsService;
 import ru.bahusdivus.bhope.services.UserService;
 import ru.bahusdivus.bhope.utils.UserDetailsUserImpl;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.List;
 
 @Controller
@@ -35,7 +33,6 @@ public class PostsController {
 
     @RequestMapping("/")
     public String getIndex(@AuthenticationPrincipal UserDetails userDetails, Model model) {
-        model.addAttribute("login", userDetails != null ? userDetails.getUsername() : null);
         model.addAttribute("userDetails", userDetails);
         List<PostDto> posts = postsService.getPostsByDateByLike();
         UserDto userDto = new UserDto();
@@ -50,7 +47,6 @@ public class PostsController {
     public String getPosts(@PathVariable("pageNumber") int pageNumber,
                            @AuthenticationPrincipal UserDetails userDetails,
                            Model model) {
-        model.addAttribute("login", userDetails != null ? userDetails.getUsername() : null);
         model.addAttribute("userDetails", userDetails);
         Page<PostDto> posts = postsService.getPostsOrderByDate(pageNumber);
         UserDto userDto = new UserDto();
@@ -67,7 +63,6 @@ public class PostsController {
     public String getPostsByLike(@PathVariable("pageNumber") int pageNumber,
                                  @AuthenticationPrincipal UserDetails userDetails,
                                  Model model) {
-        model.addAttribute("login", userDetails != null ? userDetails.getUsername() : null);
         model.addAttribute("userDetails", userDetails);
         Page<PostDto> posts = postsService.getPostsOrderByLikeCount(pageNumber);
         UserDto userDto = new UserDto();
@@ -85,9 +80,11 @@ public class PostsController {
                                 @PathVariable("pageNumber") int pageNumber,
                                 @AuthenticationPrincipal UserDetails userDetails,
                                 Model model) {
-        model.addAttribute("login", userDetails != null ? userDetails.getUsername() : null);
         model.addAttribute("userDetails", userDetails);
         UserDto userDto = userService.findById(userId);
+        if (userDto == null) {
+            return MyErrorController.getError(404, model);
+        }
         PostDto postDto = new PostDto();
         Page<PostDto> posts = postsService.getPostsByUserId(userId, pageNumber);
         model.addAttribute("postDto", postDto);
@@ -101,7 +98,6 @@ public class PostsController {
                                     @PathVariable("pageNumber") int pageNumber,
                                     @AuthenticationPrincipal UserDetails userDetails,
                                     Model model) {
-        model.addAttribute("login", userDetails != null ? userDetails.getUsername() : null);
         model.addAttribute("userDetails", userDetails);
         Page<PostDto> posts = postsService.getPostsByUserName(name, pageNumber);
         UserDto userDto = new UserDto();
@@ -118,9 +114,7 @@ public class PostsController {
                                  Model model) {
 
         if (userDetails == null) {
-            model.addAttribute("errorMessage", "Нужно авторизоваться");
-            model.addAttribute("statusCode", "401");
-            return "error";
+            return MyErrorController.getError(401, model);
         }
         model.addAttribute("userDetails", userDetails);
 
@@ -136,17 +130,13 @@ public class PostsController {
                                   Model model) {
 
         if (userDetails == null) {
-            model.addAttribute("errorMessage", "Нужно авторизоваться");
-            model.addAttribute("statusCode", "401");
-            return "error";
+            return MyErrorController.getError(401, model);
         }
         model.addAttribute("userDetails", userDetails);
 
         PostDto postDto = postsService.getPost(postId);
         if (userDetails.getId() != postDto.getUser().getId()) {
-            model.addAttribute("errorMessage", "Нет доступа");
-            model.addAttribute("statusCode", "403");
-            return "error";
+            return MyErrorController.getError(403, model);
         }
         model.addAttribute("post", postDto);
         return "editPost";
@@ -156,15 +146,11 @@ public class PostsController {
     public String deletePost(@PathVariable("postId") long postId,
                              @AuthenticationPrincipal UserDetailsUserImpl userDetails, Model model) {
         if (userDetails == null) {
-            model.addAttribute("errorMessage", "Нужно авторизоваться");
-            model.addAttribute("statusCode", "401");
-            return "error";
+            return MyErrorController.getError(401, model);
         }
         if (userDetails.getId() != postsService.getPost(postId).getUser().getId()
                 && !userDetails.getAdmin()) {
-            model.addAttribute("errorMessage", "Нет доступа");
-            model.addAttribute("statusCode", "403");
-            return "error";
+            return MyErrorController.getError(403, model);
         }
         postsService.deletePost(postId);
         return "redirect:/";
@@ -176,8 +162,12 @@ public class PostsController {
     }
 
     @RequestMapping(value = "findByUserName", method = RequestMethod.POST)
-    public String findByUserName(@ModelAttribute UserDto userDto) {
-        return "redirect:/find/" + userDto.getName() + "/0";
+    public String findByUserName(@ModelAttribute UserDto userDto) throws UnsupportedEncodingException {
+
+        if (!"".equals(userDto.getName())) {
+            return "redirect:/find/" + URLEncoder.encode(userDto.getName(), "UTF-8") + "/0";
+        }
+        return "redirect:/";
     }
 
     @RequestMapping(value = "incrementLikeCount", method = RequestMethod.POST)
@@ -213,15 +203,11 @@ public class PostsController {
                                      @AuthenticationPrincipal UserDetailsUserImpl userDetails,
                                      Model model) {
         if (userDetails == null) {
-            model.addAttribute("errorMessage", "Нужно авторизоваться");
-            model.addAttribute("statusCode", "401");
-            return "error";
+            return MyErrorController.getError(401, model);
         }
         CommentDto comment = commentsService.getComment(id);
         if (userDetails.getId() != comment.getUser().getId()) {
-            model.addAttribute("errorMessage", "Нет доступа");
-            model.addAttribute("statusCode", "403");
-            return "error";
+            return MyErrorController.getError(403, model);
         }
         model.addAttribute("comment", comment);
         return "commentPage";
@@ -234,9 +220,7 @@ public class PostsController {
                                               Model model) {
 
         if (userDetails == null) {
-            model.addAttribute("errorMessage", "Нужно авторизоваться");
-            model.addAttribute("statusCode", "401");
-            return "error";
+            return MyErrorController.getError(401, model);
         }
         model.addAttribute("userDetails", userDetails);
 
@@ -254,15 +238,11 @@ public class PostsController {
                                 @PathVariable("id") long id,
                                 @AuthenticationPrincipal UserDetailsUserImpl userDetails, Model model) {
         if (userDetails == null) {
-            model.addAttribute("errorMessage", "Нужно авторизоваться");
-            model.addAttribute("statusCode", "401");
-            return "error";
+            return MyErrorController.getError(401, model);
         }
         if (userDetails.getId() != commentsService.getComment(id).getUser().getId()
                 && !userDetails.getAdmin()) {
-            model.addAttribute("errorMessage", "Нет доступа");
-            model.addAttribute("statusCode", "403");
-            return "error";
+            return MyErrorController.getError(403, model);
         }
         commentsService.deleteComment(id);
         return "redirect:/post/" + postId;
