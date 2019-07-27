@@ -46,7 +46,7 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <p th:if="${post.content.length() > 300}"  th:text="${#strings.substring(post.content,0,300)}"></p>
+                            <p th:if="${post.content.length() > 300}"  th:text="${#strings.substring(post.content,0,300)} + '...'"></p>
                             <p th:unless="${post.content.length() > 300}"  th:text="${post.content}"></p>
                         </div>
                         <div class="card-header d-flex flex-row align-items-center bg-light">
